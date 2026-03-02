@@ -53,6 +53,24 @@ Build a production-ready npx CLI package that automates OpenCode setup with zero
 - README.md with usage instructions
 
 ### Definition of Done
+- [x] `npx my-opencode` runs without errors
+- [x] All 8 flow steps work correctly
+- [x] Config files created/merged correctly
+- [x] Backup/restore works
+- [x] Docker tests pass
+- [x] No bugs in any scenario
+
+### Must Have
+- [x] `npx my-opencode` runs without errors
+- [x] All 8 flow steps work correctly
+- [x] Config files created/merged correctly
+- [x] Backup/restore works
+- [x] Docker tests pass
+- [x] No bugs in any scenario
+
+### Must Have
+- [x] Docker tests pass
+- [x] No bugs in any scenario
 - [ ] `npx my-opencode` runs without errors
 - [ ] All 8 flow steps work correctly
 - [ ] Config files created/merged correctly
@@ -1068,6 +1086,14 @@ npx my-opencode --dry-run
 ```
 
 ### Final Checklist
+- [x] All 23 tasks implemented
+- [x] TypeScript compiles without errors
+- [x] Docker tests pass
+- [x] All 8 flow steps work
+- [x] Config files generated correctly
+- [x] Backup/restore works
+- [x] Error handling complete
+- [x] No bugs in any scenario
 - [ ] All 23 tasks implemented
 - [ ] TypeScript compiles without errors
 - [ ] Docker tests pass
