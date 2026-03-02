@@ -901,7 +901,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `test: add Docker test setup`
   - Files: tests/e2e/Dockerfile
 
-- [ ] 20. **E2E test runner** - Script to run Docker tests
+- [x] 20. **E2E test runner** - Script to run Docker tests
 
   **What to do**:
   - Create tests/e2e/run.sh:
@@ -937,7 +937,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `test: add E2E test runner`
   - Files: tests/e2e/run.sh
 
-- [ ] 21. **Test verification helpers** - Validate test outputs
+- [x] 21. **Test verification helpers** - Validate test outputs
 
   **What to do**:
   - Create tests/e2e/verify.ts:
@@ -990,7 +990,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `docs: add README with usage instructions`
   - Files: README.md
 
-- [ ] 23. **Error handling polish** - Final error handling pass
+- [x] 23. **Error handling polish** - Final error handling pass
 
   **What to do**:
   - Review all error handling
