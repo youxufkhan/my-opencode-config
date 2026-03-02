@@ -1,0 +1,71 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "agents": {
+    "sisyphus": {
+      "model": "opencode/minimax-m2.5-free",
+      "variant": "max"
+    },
+    "hephaestus": {
+      "model": "opencode/minimax-m2.5-free",
+      "variant": "max"
+    },
+    "oracle": {
+      "model": "google/gemini-2.5-flash",
+      "variant": "high"
+    },
+    "librarian": {
+      "model": "opencode/minimax-m2.5-free"
+    },
+    "explore": {
+      "model": "opencode/minimax-m2.5-free"
+    },
+    "multimodal-looker": {
+      "model": "google/gemini-2.5-flash"
+    },
+    "prometheus": {
+      "model": "opencode/minimax-m2.5-free",
+      "variant": "max"
+    },
+    "metis": {
+      "model": "opencode/minimax-m2.5-free",
+      "variant": "max"
+    },
+    "momus": {
+      "model": "google/gemini-2.5-flash",
+      "variant": "medium"
+    },
+    "atlas": {
+      "model": "opencode/minimax-m2.5-free"
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "google/gemini-2.5-flash",
+      "variant": "high"
+    },
+    "ultrabrain": {
+      "model": "google/gemini-2.5-flash",
+      "variant": "high"
+    },
+    "deep": {
+      "model": "google/gemini-2.5-flash",
+      "variant": "high"
+    },
+    "artistry": {
+      "model": "google/gemini-2.5-flash",
+      "variant": "high"
+    },
+    "quick": {
+      "model": "opencode/minimax-m2.5-free"
+    },
+    "unspecified-low": {
+      "model": "opencode/minimax-m2.5-free"
+    },
+    "unspecified-high": {
+      "model": "google/gemini-2.5-flash"
+    },
+    "writing": {
+      "model": "google/gemini-2.5-flash"
+    }
+  }
+}

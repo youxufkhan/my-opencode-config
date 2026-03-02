@@ -1,0 +1,59 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "enabled_providers": ["opencode", "google"],
+  "disabled_providers": ["anthropic", "openai", "cloudflare-ai-gateway", "azure", "deepseek"],
+  "model": "opencode/minimax-m2.5-free",
+  "small_model": "opencode/minimax-m2.5-free",
+  "mcp": {
+    "github": {
+      "command": [
+        "docker",
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "enabled": true,
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "github_pat_YOUR_TOKEN_HERE"
+      },
+      "type": "local"
+    }
+  },
+  "plugin": [
+    "opencode-gemini-auth@latest",
+    "oh-my-opencode@latest"
+  ],
+  "provider": {
+    "google": {
+      "models": {
+        "gemini-2.5-flash": {
+          "options": {
+            "thinkingConfig": {
+              "includeThoughts": true,
+              "thinkingBudget": 8192
+            }
+          }
+        },
+        "gemini-2.5-pro": {
+          "options": {
+            "thinkingConfig": {
+              "includeThoughts": true,
+              "thinkingBudget": 8192
+            }
+          }
+        }
+      }
+    },
+    "opencode": {
+      "models": {
+        "big-pickle": {},
+        "glm-5-free": {},
+        "minimax-m2.5-free": {},
+        "zen-free": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+bun.lock
+
+# Build artifacts
+dist/
+build/
+*.o
+*.so
+*.dylib
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Secrets (explicit - should not be committed but double-check)
+*secret*
+*credential*
+*.pem
+*.key
