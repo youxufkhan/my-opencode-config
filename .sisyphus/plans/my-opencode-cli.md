@@ -580,7 +580,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add authentication handler`
   - Files: src/commands/auth.ts
 
-- [ ] 11. **Main CLI entry point** - Orchestrate all steps
+- [x] 11. **Main CLI entry point** - Orchestrate all steps
 
   **What to do**:
   - Create src/index.ts:
@@ -607,7 +607,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add main CLI entry point`
   - Files: src/index.ts
 
-- [ ] 12. **Step 1: Check/install OpenCode** - First flow step
+- [x] 12. **Step 1: Check/install OpenCode** - First flow step
 
   **What to do**:
   - Create src/commands/steps/step1-check-opencode.ts:
@@ -657,7 +657,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add step 1 - check/install OpenCode`
   - Files: src/commands/steps/step1-check-opencode.ts
 
-- [ ] 13. **Step 2: Install plugins** - Configure oh-my-opencode and gemini-auth
+- [x] 13. **Step 2: Install plugins** - Configure oh-my-opencode and gemini-auth
 
   **What to do**:
   - Create src/commands/steps/step2-install-plugins.ts:
@@ -682,7 +682,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add step 2 - install plugins`
   - Files: src/commands/steps/step2-install-plugins.ts
 
-- [ ] 14. **Step 3: Superpowers installation** - Optional git clone + symlinks
+- [x] 14. **Step 3: Superpowers installation** - Optional git clone + symlinks
 
   **What to do**:
   - Create src/commands/steps/step3-superpowers.ts:
@@ -725,7 +725,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add step 3 - superpowers installation`
   - Files: src/commands/steps/step3-superpowers.ts
 
-- [ ] 15. **Step 4: Authentication flow** - Run /connect for Zen and Gemini
+- [x] 15. **Step 4: Authentication flow** - Run /connect for Zen and Gemini
 
   **What to do**:
   - Create src/commands/steps/step4-auth.ts:
@@ -758,7 +758,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add step 4 - authentication flow`
   - Files: src/commands/steps/step4-auth.ts
 
-- [ ] 16. **Step 5-6: Model selection** - Interactive model picking
+- [x] 16. **Step 5-6: Model selection** - Interactive model picking
 
   **What to do**:
   - Create src/commands/steps/step5-6-model-selection.ts:
@@ -795,7 +795,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add step 5-6 - model selection`
   - Files: src/commands/steps/step5-6-model-selection.ts
 
-- [ ] 17. **Step 7: Config writing** - Generate and write all configs
+- [x] 17. **Step 7: Config writing** - Generate and write all configs
 
   **What to do**:
   - Create src/commands/steps/step7-write-configs.ts:
@@ -847,7 +847,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add step 7 - write configurations`
   - Files: src/commands/steps/step7-write-configs.ts
 
-- [ ] 18. **Step 8: Summary output** - Final summary and next steps
+- [x] 18. **Step 8: Summary output** - Final summary and next steps
 
   **What to do**:
   - Create src/commands/steps/step8-summary.ts:
@@ -874,7 +874,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `feat: add step 8 - summary output`
   - Files: src/commands/steps/step8-summary.ts
 
-- [ ] 19. **Docker test setup** - Create Dockerfile for E2E tests
+- [x] 19. **Docker test setup** - Create Dockerfile for E2E tests
 
   **What to do**:
   - Create tests/e2e/Dockerfile:
@@ -962,7 +962,7 @@ Wave 4 (Testing - can run in parallel):
   - Message: `test: add verification helpers`
   - Files: tests/e2e/verify.ts
 
-- [ ] 22. **README documentation** - Usage instructions
+- [x] 22. **README documentation** - Usage instructions
 
   **What to do**:
   - Create README.md:
