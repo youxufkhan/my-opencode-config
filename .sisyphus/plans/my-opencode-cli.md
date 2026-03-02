@@ -1025,19 +1025,19 @@ Wave 4 (Testing - can run in parallel):
 
 ## Final Verification Wave
 
-- [ ] F1. **Plan Compliance Audit** — `oracle`
+- [x] F1. **Plan Compliance Audit** — `oracle`
   Read the plan end-to-end. For each "Must Have": verify implementation exists (read file). For each "Must NOT Have": search codebase for forbidden patterns.
   Output: `Must Have [N/N] | Must NOT Have [N/N] | Tasks [N/N] | VERDICT: APPROVE/REJECT`
 
-- [ ] F2. **Code Quality Review** — `unspecified-high`
+- [x] F2. **Code Quality Review** — `unspecified-high`
   Run tsc --noEmit + linter. Review all changed files for: any/ts-ignore, empty catches, console.log in prod.
   Output: `Build [PASS/FAIL] | Lint [PASS/FAIL] | Files [N clean/N issues] | VERDICT`
 
-- [ ] F3. **Docker E2E Tests** — `unspecified-high`
+- [x] F3. **Docker E2E Tests** — `unspecified-high`
   Run Docker tests. Execute every scenario: fresh install, config merge, auth skip, model selection.
   Output: `Scenarios [N/N pass] | VERDICT`
 
-- [ ] F4. **Manual Verification** — `deep`
+- [x] F4. **Manual Verification** — `deep`
   Run CLI locally with actual OpenCode. Verify all 8 steps work. Check config outputs.
   Output: `Steps [N/8 working] | Configs correct [YES/NO] | VERDICT`
 
