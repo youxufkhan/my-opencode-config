@@ -1,0 +1,23 @@
+{
+  "name": "my-opencode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "my-opencode": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:e2e": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "@types/node": "^20.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "esbuild": "^0.19.0"
+  }
+}
