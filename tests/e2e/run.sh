@@ -4,7 +4,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 echo "🧪 Running my-opencode E2E Tests"
 echo "=================================="
@@ -22,11 +22,11 @@ fi
 
 # Build Docker image
 echo "🐳 Building Docker test image..."
-docker build -t my-opencode-test -f "$PROJECT_ROOT/tests/e2e/Dockerfile" "$PROJECT_ROOT"
+docker build -t my-opencode-test -f "$PROJECT_ROOT/tests/e2e/Dockerfile" "$PROJECT_ROOT/tests/e2e"
 
 # Run tests in Docker
 echo "🚀 Running tests in Docker..."
-docker run --rm -it \
+docker run --rm \
     -v "$PROJECT_ROOT:/app" \
     -w /app \
     my-opencode-test \

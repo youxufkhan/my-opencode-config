@@ -1,15 +1,12 @@
-FROM ubuntu:22.04
+FROM alpine:latest
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    nodejs \
-    npm \
-    git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache nodejs npm git curl bash \
+    && rm -rf /var/cache/apk/*
 
 # Set working directory
 WORKDIR /test
+COPY . /app
 
 # Default command
 CMD ["/bin/bash"]
