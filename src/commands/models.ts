@@ -24,14 +24,38 @@ export async function fetchZenModels(): Promise<Model[]> {
   // Try to fetch from opencode CLI command - fallback to hardcoded list
   try {
     const { stdout } = await execAsync('opencode models opencode --verbose', {
-      timeout: 10000,
+      timeout: 30000,
     });
     
-    const models = JSON.parse(stdout.trim());
+    // Output format: "opencode/model-id\n{...json...}\nopencode/model-id\n{...json...}"
+    const parts = stdout.split(/^opencode\//m);
+    const models: any[] = [];
     
-    return (models || [])
-      .filter((m: any) => m.cost?.input === 0 && m.cost?.output === 0)
-      .map((m: any) => ({
+    for (const part of parts) {
+      if (!part.trim()) continue;
+      const start = part.indexOf('{');
+      if (start >= 0) {
+        let braceCount = 0;
+        let end = start;
+        for (let i = start; i < part.length; i++) {
+          if (part[i] === '{') braceCount++;
+          else if (part[i] === '}') braceCount--;
+          if (braceCount === 0) {
+            end = i + 1;
+            break;
+          }
+        }
+        try {
+          models.push(JSON.parse(part.slice(start, end)));
+        } catch {
+          // Skip invalid JSON
+        }
+      }
+    }
+    
+    return models
+      .filter((m) => m.cost?.input === 0 && m.cost?.output === 0)
+      .map((m) => ({
         id: m.id,
         name: m.name || m.id,
         provider: 'zen' as const,
