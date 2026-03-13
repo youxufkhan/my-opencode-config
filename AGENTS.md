@@ -1,3 +1,65 @@
+# PROJECT KNOWLEDGE BASE
+
+**Generated:** 2026-03-14
+**Commit:** e2bb1ed
+**Branch:** master
+
+## OVERVIEW
+
+TypeScript CLI tool for automating OpenCode configuration setup. Interactive 8-step wizard that installs plugins, configures auth, and generates opencode.json.
+
+## STRUCTURE
+
+```
+./
+├── src/
+│   ├── commands/     # CLI command modules (auth, models, plugins, config)
+│   └── utils/        # Utilities (config, logging, opencode, prompts)
+├── tests/e2e/        # Docker-based E2E tests
+├── dist/             # Compiled output
+└── package.json      # npm scripts: build, test:e2e
+```
+
+## WHERE TO LOOK
+
+| Task | Location |
+|------|----------|
+| CLI entry point | `src/index.ts` |
+| Config merging logic | `src/utils/config.ts` |
+| Model fetching | `src/commands/models.ts` |
+| Plugin installation | `src/commands/plugins.ts` |
+| Auth flow | `src/commands/auth.ts` |
+
+## CONVENTIONS
+
+- **TypeScript**: Strict mode, ES2020 target, CommonJS modules
+- **Build**: `tsc` compiles `src/` → `dist/`
+- **CLI args**: Manual parsing for `--help` and `--dry-run`
+- **No ESLint/Prettier**: Project lacks linting config
+- **Shebang**: Redundant in `src/index.ts` (bin field handles execution)
+
+## ANTI-PATTERNS
+
+- No TODO/FIXME comments in source (clean codebase)
+- No explicit forbidden patterns documented
+
+## COMMANDS
+
+```bash
+npm install           # Install dependencies
+npm run build         # Compile TypeScript → dist/
+npm run test:e2e     # Run Docker-based E2E tests
+npx my-opencode      # Run CLI
+```
+
+## NOTES
+
+- E2E tests run inside Alpine Docker container for isolation
+- GitNexus indexed: use `gitnexus://repo/opencode-config/context` for code intelligence
+- Subdirectories too small for individual AGENTS.md (skip)
+
+---
+
 <!-- gitnexus:start -->
 # GitNexus MCP
 
