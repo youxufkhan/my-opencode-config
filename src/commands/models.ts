@@ -1,8 +1,27 @@
-import { Model } from '../types';
+import { Model, ModelCapabilities } from '../types';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const execAsync = promisify(exec);
+
+// Calculate score based on capabilities
+function calculateScore(capabilities: ModelCapabilities | undefined): number {
+  if (!capabilities) return 10;
+
+  let score = 10; // Base score
+
+  if (capabilities.reasoning) score += 5;
+  if (capabilities.thinking) score += 10;
+  if (capabilities.toolcall) score += 5;
+  if (capabilities.attachment) score += 5;
+  if (capabilities.input?.image) score += 3;
+  if (capabilities.variants?.high) score += 3;
+  if (capabilities.variants?.max) score += 3;
+  if ((capabilities.limit?.context ?? 0) > 100000) score += 3;
+  if ((capabilities.limit?.output ?? 0) > 100000) score += 3;
+
+  return score;
+}
 
 // Known free Zen models (as fallback)
 const KNOWN_ZEN_FREE_MODELS = [
@@ -48,19 +67,31 @@ export async function fetchZenModels(): Promise<Model[]> {
         try {
           models.push(JSON.parse(part.slice(start, end)));
         } catch {
-          // Skip invalid JSON
+          // Skip invalid JSON for this model
         }
       }
     }
     
-    return models
+    const parsedModels = models
       .filter((m) => m.cost?.input === 0 && m.cost?.output === 0)
-      .map((m) => ({
-        id: m.id,
-        name: m.name || m.id,
-        provider: 'zen' as const,
-        isFree: true,
-      }));
+      .map((m) => {
+        const capabilities: ModelCapabilities | undefined = m.capabilities;
+        return {
+          id: m.id,
+          name: m.name || m.id,
+          provider: 'zen' as const,
+          isFree: true,
+          capabilities,
+          score: calculateScore(capabilities),
+        };
+      });
+
+    // Find max score and mark all models with that score as recommended
+    const maxScore = Math.max(...parsedModels.map(m => m.score ?? 10));
+    return parsedModels.map(m => ({
+      ...m,
+      isRecommended: (m.score ?? 10) === maxScore,
+    }));
   } catch {
     // Fallback to known models
   }

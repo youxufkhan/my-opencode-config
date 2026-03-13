@@ -6,7 +6,7 @@ import { getRequiredPlugins, mergePluginConfig } from './commands/plugins';
 import { fetchAllModels } from './commands/models';
 import { generateOpencodeConfig, generateOhMyOpencodeConfig } from './commands/config-templates';
 import { authenticateIfNeeded } from './commands/auth';
-import { promptConfirm, selectModel } from './utils/prompts';
+import { promptConfirm, selectModel, withSpinner } from './utils/prompts';
 import { getConfigPath, configExists, readConfig, backupConfig, writeConfig } from './utils/config';
 import { info, success, error, warn, section, step, resetSteps } from './utils/logging';
 import * as fs from 'fs/promises';
@@ -84,9 +84,11 @@ Options:
     }
     
     // Add plugins
-    const requiredPlugins = getRequiredPlugins();
-    const existingPlugins = opencodeConfig.plugin || [];
-    opencodeConfig.plugin = mergePluginConfig(existingPlugins, requiredPlugins);
+    await withSpinner('Configuring plugins...', async () => {
+      const requiredPlugins = getRequiredPlugins();
+      const existingPlugins = opencodeConfig.plugin || [];
+      opencodeConfig.plugin = mergePluginConfig(existingPlugins, requiredPlugins);
+    });
     success('Plugins configured!');
 
     // Step 3: Superpowers installation (optional)
@@ -103,26 +105,27 @@ Options:
       installSuperpowers = await promptConfirm('Would you like to install Superpowers?');
       
       if (installSuperpowers) {
-        info('Installing Superpowers...');
-        const { exec } = await import('child_process');
-        const { promisify } = await import('util');
-        const execAsync = promisify(exec);
-        
         try {
-          await execAsync('git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers');
-          
-          await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'plugins'), { recursive: true });
-          await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'skills'), { recursive: true });
-          
-          await fs.symlink(
-            path.join(os.homedir(), '.config', 'opencode', 'superpowers', '.opencode', 'plugins', 'superpowers.js'),
-            path.join(os.homedir(), '.config', 'opencode', 'plugins', 'superpowers.js')
-          );
-          
-          await fs.symlink(
-            path.join(os.homedir(), '.config', 'opencode', 'superpowers', 'skills'),
-            path.join(os.homedir(), '.config', 'opencode', 'skills', 'superpowers')
-          );
+          await withSpinner('Installing Superpowers...', async () => {
+            const { exec } = await import('child_process');
+            const { promisify } = await import('util');
+            const execAsync = promisify(exec);
+            
+            await execAsync('git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers');
+            
+            await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'plugins'), { recursive: true });
+            await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'skills'), { recursive: true });
+            
+            await fs.symlink(
+              path.join(os.homedir(), '.config', 'opencode', 'superpowers', '.opencode', 'plugins', 'superpowers.js'),
+              path.join(os.homedir(), '.config', 'opencode', 'plugins', 'superpowers.js')
+            );
+            
+            await fs.symlink(
+              path.join(os.homedir(), '.config', 'opencode', 'superpowers', 'skills'),
+              path.join(os.homedir(), '.config', 'opencode', 'skills', 'superpowers')
+            );
+          });
           
           success('Superpowers installed successfully!');
         } catch (e: any) {
@@ -138,7 +141,7 @@ Options:
     // Step 5-6: Model selection
     step('Model selection');
     
-    const models = await fetchAllModels();
+    const models = await withSpinner('Fetching available models...', () => fetchAllModels());
     
     info('Select your main model (for general use):');
     const mainModel = await selectModel('Choose main model:', models.zen);
@@ -182,22 +185,24 @@ Options:
     step('Writing configurations');
     
     if (!dryRun) {
-      if (await configExists('opencode.json')) {
-        await backupConfig('opencode.json');
-        info('Backed up existing opencode.json');
-      }
-      if (await configExists('oh-my-opencode.json')) {
-        await backupConfig('oh-my-opencode.json');
-        info('Backed up existing oh-my-opencode.json');
-      }
-      
-      const newOpencodeConfig = generateOpencodeConfig(selections, opencodeConfig);
-      await writeConfig('opencode.json', newOpencodeConfig);
-      success('Written opencode.json');
-      
-      const ohMyOpencodeConfig = generateOhMyOpencodeConfig(selections);
-      await writeConfig('oh-my-opencode.json', ohMyOpencodeConfig);
-      success('Written oh-my-opencode.json');
+      await withSpinner('Writing configuration files...', async () => {
+        if (await configExists('opencode.json')) {
+          await backupConfig('opencode.json');
+          info('Backed up existing opencode.json');
+        }
+        if (await configExists('oh-my-opencode.json')) {
+          await backupConfig('oh-my-opencode.json');
+          info('Backed up existing oh-my-opencode.json');
+        }
+        
+        const newOpencodeConfig = generateOpencodeConfig(selections, opencodeConfig);
+        await writeConfig('opencode.json', newOpencodeConfig);
+        success('Written opencode.json');
+        
+        const ohMyOpencodeConfig = generateOhMyOpencodeConfig(selections);
+        await writeConfig('oh-my-opencode.json', ohMyOpencodeConfig);
+        success('Written oh-my-opencode.json');
+      });
     } else {
       info('Skipped writing config files (dry-run)');
     }
