@@ -89,3 +89,28 @@ export async function authenticateAll(): Promise<void> {
   await authenticateZen();
   await authenticateGemini();
 }
+
+export async function authenticateIfNeeded(): Promise<void> {
+  const status = await getAuthStatus();
+  
+  // If already fully authenticated, skip
+  if (status.zen && status.gemini) {
+    console.log('✅ Already authenticated for all providers');
+    return;
+  }
+  
+  // Show which providers need authentication
+  const missing = [];
+  if (!status.zen) missing.push('OpenCode Zen');
+  if (!status.gemini) missing.push('Google Gemini');
+  
+  console.log(`\n📋 Providers to authenticate: ${missing.join(', ')}\n`);
+  
+  // Spawn /connect ONCE (user can select multiple providers)
+  await spawnOpencodeConnect();
+  
+  // Re-check and report
+  const newStatus = await getAuthStatus();
+  if (newStatus.zen && !status.zen) console.log('✅ Zen authenticated');
+  if (newStatus.gemini && !status.gemini) console.log('✅ Gemini authenticated');
+}

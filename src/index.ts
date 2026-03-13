@@ -5,7 +5,7 @@ import { isOpenCodeInstalled, installOpenCode } from './utils/opencode';
 import { getRequiredPlugins, mergePluginConfig } from './commands/plugins';
 import { fetchAllModels } from './commands/models';
 import { generateOpencodeConfig, generateOhMyOpencodeConfig } from './commands/config-templates';
-import { authenticateAll } from './commands/auth';
+import { authenticateIfNeeded } from './commands/auth';
 import { promptConfirm, selectModel } from './utils/prompts';
 import { getConfigPath, configExists, readConfig, backupConfig, writeConfig } from './utils/config';
 import { info, success, error, warn, section, step, resetSteps } from './utils/logging';
@@ -133,14 +133,7 @@ Options:
 
     // Step 4: Authentication
     step('Authentication');
-    const doAuth = await promptConfirm('Would you like to authenticate with OpenCode Zen and Gemini?');
-    
-    if (doAuth) {
-      // Spawn interactive opencode /connect subprocess
-      await authenticateAll();
-    } else {
-      warn('Skipping authentication. Run "opencode /connect" later to authenticate.');
-    }
+    await authenticateIfNeeded();
 
     // Step 5-6: Model selection
     step('Model selection');
