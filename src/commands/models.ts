@@ -1,4 +1,8 @@
 import { Model } from '../types';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 // Known free Zen models (as fallback)
 const KNOWN_ZEN_FREE_MODELS = [
@@ -17,21 +21,22 @@ const KNOWN_GEMINI_MODELS = [
 ];
 
 export async function fetchZenModels(): Promise<Model[]> {
-  // Try to fetch from Zen API - fallback to hardcoded list
+  // Try to fetch from opencode CLI command - fallback to hardcoded list
   try {
-    const response = await fetch('https://opencode.ai/zen/api/models');
-    if (response.ok) {
-      const data = await response.json() as any;
-      return (data.models || [])
-      return data.models
-        ?.filter((m: any) => m.id?.toLowerCase().endsWith('free'))
-        .map((m: any) => ({
-          id: m.id,
-          name: m.name || m.id,
-          provider: 'zen' as const,
-          isFree: true,
-        })) || [];
-    }
+    const { stdout } = await execAsync('opencode models opencode --verbose', {
+      timeout: 10000,
+    });
+    
+    const models = JSON.parse(stdout.trim());
+    
+    return (models || [])
+      .filter((m: any) => m.cost?.input === 0 && m.cost?.output === 0)
+      .map((m: any) => ({
+        id: m.id,
+        name: m.name || m.id,
+        provider: 'zen' as const,
+        isFree: true,
+      }));
   } catch {
     // Fallback to known models
   }
