@@ -174,7 +174,7 @@
 ## Success Criteria
 
 ### Final Checklist
-- [ ] Scoring works
-- [ ] Recommended model marked
-- [ ] Loading spinners work
-- [ ] Build passes
+- [x] Scoring works
+- [x] Recommended model marked
+- [x] Loading spinners work
+- [x] Build passes

@@ -38,3 +38,4 @@ logs/
 *credential*
 *.pem
 *.key
+.gitnexus
