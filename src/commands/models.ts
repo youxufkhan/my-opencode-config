@@ -47,28 +47,27 @@ export async function fetchZenModels(): Promise<Model[]> {
     });
     
     // Output format: "opencode/model-id\n{...json...}\nopencode/model-id\n{...json...}"
-    const parts = stdout.split(/^opencode\//m);
+    // Use regex match instead of split to avoid empty first element
+    const modelBlocks = stdout.match(/^opencode\/[^\n]*\n(\{[\s\S]*?\})/gm);
+    
+    if (!modelBlocks) {
+      // Fallback to known models if no models found
+      console.error('[models] No models found in verbose output, using fallback');
+      throw new Error('No models found');
+    }
+    
     const models: any[] = [];
     
-    for (const part of parts) {
-      if (!part.trim()) continue;
-      const start = part.indexOf('{');
-      if (start >= 0) {
-        let braceCount = 0;
-        let end = start;
-        for (let i = start; i < part.length; i++) {
-          if (part[i] === '{') braceCount++;
-          else if (part[i] === '}') braceCount--;
-          if (braceCount === 0) {
-            end = i + 1;
-            break;
-          }
-        }
-        try {
-          models.push(JSON.parse(part.slice(start, end)));
-        } catch {
-          // Skip invalid JSON for this model
-        }
+    for (const block of modelBlocks) {
+      // Extract JSON from the block (everything after the first line)
+      const jsonStart = block.indexOf('{');
+      if (jsonStart < 0) continue;
+      
+      const jsonStr = block.slice(jsonStart);
+      try {
+        models.push(JSON.parse(jsonStr));
+      } catch (err) {
+        console.error('[models] Failed to parse JSON block:', jsonStr.slice(0, 100), err instanceof Error ? err.message : 'Unknown error');
       }
     }
     
