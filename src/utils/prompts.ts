@@ -57,7 +57,7 @@ export async function selectModels(
 }
 
 function formatModelLabel(model: Model): string {
-  let label = model.name;
+  let label = `${model.name} (Score: ${model.score})`;
   
   if (model.isFree) {
     label += ' [FREE]';

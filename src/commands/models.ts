@@ -1,4 +1,27 @@
-import { Model } from '../types';
+import { Model, ModelCapabilities } from '../types';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
+
+// Calculate score based on capabilities
+function calculateScore(capabilities: ModelCapabilities | undefined): number {
+  if (!capabilities) return 10;
+
+  let score = 10; // Base score
+
+  if (capabilities.reasoning) score += 5;
+  if (capabilities.thinking) score += 10;
+  if (capabilities.toolcall) score += 5;
+  if (capabilities.attachment) score += 5;
+  if (capabilities.input?.image) score += 3;
+  if (capabilities.variants?.high) score += 3;
+  if (capabilities.variants?.max) score += 3;
+  if ((capabilities.limit?.context ?? 0) > 100000) score += 3;
+  if ((capabilities.limit?.output ?? 0) > 100000) score += 3;
+
+  return score;
+}
 
 // Known free Zen models (as fallback)
 const KNOWN_ZEN_FREE_MODELS = [
@@ -17,21 +40,58 @@ const KNOWN_GEMINI_MODELS = [
 ];
 
 export async function fetchZenModels(): Promise<Model[]> {
-  // Try to fetch from Zen API - fallback to hardcoded list
+  // Try to fetch from opencode CLI command - fallback to hardcoded list
   try {
-    const response = await fetch('https://opencode.ai/zen/api/models');
-    if (response.ok) {
-      const data = await response.json() as any;
-      return (data.models || [])
-      return data.models
-        ?.filter((m: any) => m.id?.toLowerCase().endsWith('free'))
-        .map((m: any) => ({
+    const { stdout } = await execAsync('opencode models opencode --verbose', {
+      timeout: 30000,
+    });
+    
+    // Output format: "opencode/model-id\n{...json...}\nopencode/model-id\n{...json...}"
+    const parts = stdout.split(/^opencode\//m);
+    const models: any[] = [];
+    
+    for (const part of parts) {
+      if (!part.trim()) continue;
+      const start = part.indexOf('{');
+      if (start >= 0) {
+        let braceCount = 0;
+        let end = start;
+        for (let i = start; i < part.length; i++) {
+          if (part[i] === '{') braceCount++;
+          else if (part[i] === '}') braceCount--;
+          if (braceCount === 0) {
+            end = i + 1;
+            break;
+          }
+        }
+        try {
+          models.push(JSON.parse(part.slice(start, end)));
+        } catch {
+          // Skip invalid JSON for this model
+        }
+      }
+    }
+    
+    const parsedModels = models
+      .filter((m) => m.cost?.input === 0 && m.cost?.output === 0)
+      .map((m) => {
+        const capabilities: ModelCapabilities | undefined = m.capabilities;
+        return {
           id: m.id,
           name: m.name || m.id,
           provider: 'zen' as const,
           isFree: true,
-        })) || [];
-    }
+          capabilities,
+          score: calculateScore(capabilities),
+        };
+      });
+
+    // Find max score and mark all models with that score as recommended
+    const maxScore = Math.max(...parsedModels.map(m => m.score ?? 10));
+    return parsedModels.map(m => ({
+      ...m,
+      isRecommended: (m.score ?? 10) === maxScore,
+    }));
   } catch {
     // Fallback to known models
   }

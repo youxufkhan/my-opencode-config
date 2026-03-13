@@ -100,7 +100,7 @@ export function mergeConfigs(existing: any, updates: any): any {
     const updateValue = updates[key];
     
     if (Array.isArray(existingValue) && Array.isArray(updateValue)) {
-      result[key] = [...existingValue, ...updateValue];
+      result[key] = [...new Set([...existingValue, ...updateValue])];
     } else if (typeof existingValue === 'object' && typeof updateValue === 'object' && 
                existingValue !== null && updateValue !== null && !Array.isArray(existingValue)) {
       result[key] = mergeConfigs(existingValue, updateValue);

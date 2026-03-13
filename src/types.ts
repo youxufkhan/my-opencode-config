@@ -1,10 +1,22 @@
 // Model from Zen or Gemini
+export interface ModelCapabilities {
+  reasoning?: boolean;
+  thinking?: boolean;
+  toolcall?: boolean;
+  attachment?: boolean;
+  input?: { image?: boolean };
+  limit?: { context?: number; output?: number };
+  variants?: { high?: boolean; max?: boolean };
+}
+
 export interface Model {
   id: string;
   name: string;
   provider: 'zen' | 'google';
-  isFree?: boolean;      // Only for zen
-  isRecommended?: boolean; // For gemini - true if "flash" in id
+  isFree?: boolean;
+  isRecommended?: boolean;
+  score?: number;
+  capabilities?: ModelCapabilities;
 }
 
 // Backup entry for config files
