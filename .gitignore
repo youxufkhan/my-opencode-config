@@ -33,6 +33,9 @@ logs/
 *.temp
 .cache/
 
+# OpenCode Sisyphus workspace (user-specific, transient)
+.sisyphus/
+
 # Secrets (explicit - should not be committed but double-check)
 *secret*
 *credential*
