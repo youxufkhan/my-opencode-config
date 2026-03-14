@@ -105,31 +105,35 @@ Options:
       installSuperpowers = await promptConfirm('Would you like to install Superpowers?');
       
       if (installSuperpowers) {
-        try {
-          await withSpinner('Installing Superpowers...', async () => {
-            const { exec } = await import('child_process');
-            const { promisify } = await import('util');
-            const execAsync = promisify(exec);
+        if (dryRun) {
+          info('Skipped Superpowers installation (dry-run)');
+        } else {
+          try {
+            await withSpinner('Installing Superpowers...', async () => {
+              const { exec } = await import('child_process');
+              const { promisify } = await import('util');
+              const execAsync = promisify(exec);
+              
+              await execAsync('git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers');
+              
+              await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'plugins'), { recursive: true });
+              await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'skills'), { recursive: true });
+              
+              await fs.symlink(
+                path.join(os.homedir(), '.config', 'opencode', 'superpowers', '.opencode', 'plugins', 'superpowers.js'),
+                path.join(os.homedir(), '.config', 'opencode', 'plugins', 'superpowers.js')
+              );
+              
+              await fs.symlink(
+                path.join(os.homedir(), '.config', 'opencode', 'superpowers', 'skills'),
+                path.join(os.homedir(), '.config', 'opencode', 'skills', 'superpowers')
+              );
+            });
             
-            await execAsync('git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers');
-            
-            await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'plugins'), { recursive: true });
-            await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'skills'), { recursive: true });
-            
-            await fs.symlink(
-              path.join(os.homedir(), '.config', 'opencode', 'superpowers', '.opencode', 'plugins', 'superpowers.js'),
-              path.join(os.homedir(), '.config', 'opencode', 'plugins', 'superpowers.js')
-            );
-            
-            await fs.symlink(
-              path.join(os.homedir(), '.config', 'opencode', 'superpowers', 'skills'),
-              path.join(os.homedir(), '.config', 'opencode', 'skills', 'superpowers')
-            );
-          });
-          
-          success('Superpowers installed successfully!');
-        } catch (e: any) {
-          error(`Failed to install Superpowers: ${e.message}`);
+            success('Superpowers installed successfully!');
+          } catch (e: any) {
+            error(`Failed to install Superpowers: ${e.message}`);
+          }
         }
       }
     }
