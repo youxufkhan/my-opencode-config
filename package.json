@@ -13,10 +13,15 @@
   },
   "keywords": [
     "opencode",
+    "opencode-config",
+    "ai-config",
     "cli",
-    "ai",
-    "configuration",
-    "wizard"
+    "devtool",
+    "automation",
+    "free-models",
+    "ai-coding",
+    "local-ai",
+    "developer-tools"
   ],
   "author": "YouXuf Khan <youxufkhan@github.com>",
   "license": "MIT",

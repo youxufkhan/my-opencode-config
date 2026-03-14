@@ -3,7 +3,9 @@
 > An interactive setup wizard to configure OpenCode with powerful free models and essential tools.
 
 [![npm version](https://img.shields.io/npm/v/my-opencode-config.svg)](https://www.npmjs.com/package/my-opencode-config)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![npm downloads](https://img.shields.io/npm/dw/my-opencode-config)](https://www.npmjs.com/package/my-opencode-config)
+[![License: MIT](https://img.shields.io/npm/l/my-opencode-config)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/node/v/my-opencode-config)](https://nodejs.org)
 
 ## Why It Exists
 
