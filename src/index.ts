@@ -230,6 +230,8 @@ Options:
     console.log('\n🔄 To restore previous config:');
     console.log('  Check ~/.config/opencode/backups/');
     
+    console.log('\n⭐ Star us on GitHub: https://github.com/youxufkhan/my-opencode-config');
+    
     outro('Happy coding!');
     
   } catch (e: any) {
