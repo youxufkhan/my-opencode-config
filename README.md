@@ -53,3 +53,4 @@ This tool stands on the shoulders of giants. Check out the projects that make it
 - **OpenCode**: [https://github.com/anomalyco/opencode](https://github.com/anomalyco/opencode)
 - **oh-my-openagent**: [https://github.com/code-yeongyu/oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent)
 - **Superpowers**: [https://github.com/obra/superpowers](https://github.com/obra/superpowers)
+<img src="https://my-opencode-config.goatcounter.com/count?p=/readme">
