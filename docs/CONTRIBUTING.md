@@ -1,6 +1,6 @@
-# Contributing to my-opencode
+# Contributing to my-opencode-config
 
-Thank you for your interest in contributing to `my-opencode`! We welcome all developers to help make this project even better.
+Thank you for your interest in contributing to `my-opencode-config`! We welcome all developers to help make this project even better.
 
 ## Development Setup
 
@@ -8,8 +8,8 @@ To get started, follow these steps:
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/your-repo/my-opencode.git
-    cd my-opencode
+    git clone https://github.com/your-repo/my-opencode-config.git
+    cd my-opencode-config
     ```
 
 2.  **Install dependencies**:
@@ -39,7 +39,7 @@ We follow a standard PR process:
 
 ## Testing Your Changes
 
-We use Docker-based E2E tests for `my-opencode` to ensure isolation and consistency.
+We use Docker-based E2E tests for `my-opencode-config` to ensure isolation and consistency.
 
 To run the E2E tests locally:
 ```bash

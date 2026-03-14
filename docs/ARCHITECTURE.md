@@ -1,12 +1,12 @@
-# Architecture of my-opencode
+# Architecture of my-opencode-config
 
-`my-opencode` is built with TypeScript to provide a structured and maintainable CLI tool for OpenCode configuration.
+`my-opencode-config` is built with TypeScript to provide a structured and maintainable CLI tool for OpenCode configuration.
 
 ## Key Design Principles
 
 - **Modular Design**: The project is split into `src/commands` for business logic and `src/utils` for reusable helper functions.
 - **Interactive Wizard**: The tool uses `@clack/prompts` to create an 8-step, step-by-step interactive setup wizard.
-- **Resilient Configuration**: Before any change is made, `my-opencode` creates a backup of the existing `opencode.json` file.
+- **Resilient Configuration**: Before any change is made, `my-opencode-config` creates a backup of the existing `opencode.json` file.
 - **Isolated Testing**: E2E tests are executed inside a Docker container (Alpine Linux) to prevent local environment interference.
 
 ## Project Structure
@@ -42,7 +42,7 @@ If you want to add a new step to the setup process, follow these guidelines:
 
 ## Configuration Merging
 
-`my-opencode` uses a careful merging strategy to avoid overwriting existing user settings. It parses the current `opencode.json` and only updates or adds specific keys related to models, providers, and plugins.
+`my-opencode-config` uses a careful merging strategy to avoid overwriting existing user settings. It parses the current `opencode.json` and only updates or adds specific keys related to models, providers, and plugins.
 
 ## Future Roadmap
 

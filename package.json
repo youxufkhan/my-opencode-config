@@ -1,15 +1,35 @@
 {
-  "name": "my-opencode",
-  "version": "1.0.0",
-  "description": "",
+  "name": "my-opencode-config",
+  "version": "0.1.0-beta.2",
+  "description": "The ultimate OpenCode setup CLI. Automate your configuration and unlock the power of free and premium models in seconds.",
   "main": "dist/index.js",
   "bin": {
-    "my-opencode": "./dist/index.js"
+    "my-opencode-config": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:e2e": "bash tests/e2e/run.sh"
+  },
+  "keywords": [
+    "opencode",
+    "cli",
+    "ai",
+    "configuration",
+    "wizard"
+  ],
+  "author": "YouXuf Khan <youxufkhan@github.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youxufkhan/my-opencode-config.git"
+  },
+  "bugs": {
+    "url": "https://github.com/youxufkhan/my-opencode-config/issues"
+  },
+  "homepage": "https://github.com/youxufkhan/my-opencode-config#readme",
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@clack/prompts": "^0.7.0",

@@ -1,0 +1,42 @@
+# Source and tests (publish compiled JS only)
+src/
+tests/
+docs/
+
+# Git
+.git/
+.gitignore
+.github/
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and cache
+*.log
+logs/
+.cache/
+
+# Package management
+package-lock.json
+bun.lock
+
+# Config files that shouldn't be in package
+config.json
+opencode.json
+oh-my-opencode.json
+tsconfig.json
+
+# Development files
+AGENTS.md
+CLAUDE.md
+.sisyphus/
+.claude/
+.gitnexus
+*.md

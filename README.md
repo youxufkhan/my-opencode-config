@@ -1,66 +1,53 @@
-# my-opencode
+# my-opencode-config
 
-> The ultimate OpenCode setup CLI. Automate your configuration and unlock the power of free and premium models in seconds.
+> An interactive setup wizard to configure OpenCode with powerful free models and essential tools.
 
-[![npm version](https://img.shields.io/npm/v/my-opencode.svg)](https://www.npmjs.com/package/my-opencode)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/my-opencode-config.svg)](https://www.npmjs.com/package/my-opencode-config)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## Why This Exists
+## Why It Exists
 
-Manually configuring OpenCode with the best free and powerful models, essential plugins, and optimal settings can be a tedious and error-prone task. `my-opencode` simplifies this process into an interactive, 8-step wizard that gets you up and running with a professional-grade AI development environment in no time.
+OpenCode is powerful, but unlocking its full potential with free, high-quality models can be complex. This wizard automates the entire setup—from authentication to plugin installation—so you can get a supercharged, cost-effective OpenCode environment running in minutes, not hours.
+
+Its sole purpose is to make OpenCode great for free by leveraging OpenCode Zen models and Gemini free tier limits, providing a generous allowance for daily, medium-complexity tasks.
 
 ## Quick Start
 
-The fastest way to use `my-opencode` is via `npx`. No installation required!
+Run the setup wizard directly without installation. This is the fastest way to get started.
 
 ```bash
-npx my-opencode
+npx my-opencode-config
 ```
+
+## Key Features
+
+- 🔮 **Intelligent Model Discovery**: Finds and recommends the best-performing free models from OpenCode Zen.
+- 🔌 **Essential Plugins**: Installs and configures the popular `oh-my-opencode` agent harness to put your agent on steroids.
+- 🚀 **Superpowers Included**: Integrates the `superpowers` skill set for advanced agent capabilities.
+- 🔐 **Seamless Authentication**: Handles OAuth for OpenCode Zen and Google Gemini.
+- ⚙️ **Smart Configuration**: Sets up the GitHub MCP and configures agents to use free models by default.
+
+## Prerequisites
+
+- **Node.js**: `v18.0.0` or higher.
+- **OpenCode**: An existing installation is required.
 
 ## Installation
 
-### Globally (Recommended)
+Alternatively, you can install the CLI globally for easier access.
 
 ```bash
-npm install -g my-opencode
-my-opencode
+npm install -g my-opencode-config
 ```
-
-### Locally
-
+Then, run the wizard:
 ```bash
-npm install my-opencode
-npx my-opencode
+my-opencode-config
 ```
 
-## Features
+## References
 
-- **✅ Smart Model Scoring**: Automatically fetches and ranks the best free models based on their capabilities (thinking, reasoning, tool calling, etc.).
-- **✅ Essential Plugins**: Seamlessly installs and configures `oh-my-opencode` and `opencode-gemini-auth`.
-- **✅ Comprehensive Authentication**: Easy connection to OpenCode Zen and Google Gemini.
-- **✅ Superpowers Suite**: Optional integration with the advanced Superpowers AI agents for debugging and code analysis.
-- **✅ Resilient Configuration**: Smart merging of your existing settings and automatic backups of `opencode.json`.
-- **✅ Interactive UI**: A clean, step-by-step wizard powered by `@clack/prompts`.
+This tool stands on the shoulders of giants. Check out the projects that make it possible:
 
-## Requirements
-
-- **Node.js**: 18.0.0 or higher.
-- **Git**: Required if you choose to install the Superpowers suite.
-- **OpenCode**: Will be detected and installation instructions provided if missing.
-
-## Documentation
-
-For more detailed information, check out our comprehensive guides:
-
-- 🚀 [Getting Started Guide](docs/GETTING_STARTED.md)
-- 💡 [Detailed Features Overview](docs/FEATURES.md)
-- 🛠️ [Architecture & Internal Design](docs/ARCHITECTURE.md)
-- 🤝 [Contributing to my-opencode](docs/CONTRIBUTING.md)
-
-## Development
-
-If you'd like to contribute, see the [Contributing Guide](docs/CONTRIBUTING.md) for setup and testing instructions.
-
-## License
-
-MIT © [OpenCode Team](https://github.com/opencode-config)
+- **OpenCode**: [https://github.com/anomalyco/opencode](https://github.com/anomalyco/opencode)
+- **oh-my-openagent**: [https://github.com/code-yeongyu/oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent)
+- **Superpowers**: [https://github.com/obra/superpowers](https://github.com/obra/superpowers)

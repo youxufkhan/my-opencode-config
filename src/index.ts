@@ -27,7 +27,7 @@ async function main() {
   let dryRun = false;
   
   if (args.includes('--help')) {
-    console.log(`Usage: my-opencode [OPTIONS]
+    console.log(`Usage: my-opencode-config [OPTIONS]
 
 Options:
   --help        Show this help message and exit
@@ -42,7 +42,7 @@ Options:
   
   resetSteps();
   
-  intro('my-opencode - OpenCode Setup CLI');
+  intro('my-opencode-config - OpenCode Setup CLI');
 
   try {
     // Step 1: Check OpenCode installation
