@@ -47,27 +47,45 @@ export async function fetchZenModels(): Promise<Model[]> {
     });
     
     // Output format: "opencode/model-id\n{...json...}\nopencode/model-id\n{...json...}"
-    // Use regex match instead of split to avoid empty first element
-    const modelBlocks = stdout.match(/^opencode\/[^\n]*\n(\{[\s\S]*?\})/gm);
-    
-    if (!modelBlocks) {
-      // Fallback to known models if no models found
-      console.error('[models] No models found in verbose output, using fallback');
-      throw new Error('No models found');
-    }
-    
+    // Need to properly parse JSON blocks by tracking brace depth
+    const lines = stdout.split('\n');
     const models: any[] = [];
+    let currentJson = '';
+    let braceDepth = 0;
+    let inJson = false;
     
-    for (const block of modelBlocks) {
-      // Extract JSON from the block (everything after the first line)
-      const jsonStart = block.indexOf('{');
-      if (jsonStart < 0) continue;
+    for (const line of lines) {
+      if (line.startsWith('opencode/')) {
+        // Start of new model block - reset
+        currentJson = '';
+        braceDepth = 0;
+        inJson = false;
+        continue;
+      }
       
-      const jsonStr = block.slice(jsonStart);
-      try {
-        models.push(JSON.parse(jsonStr));
-      } catch (err) {
-        console.error('[models] Failed to parse JSON block:', jsonStr.slice(0, 100), err instanceof Error ? err.message : 'Unknown error');
+      if (line.trim() === '{') {
+        inJson = true;
+        braceDepth = 0;
+      }
+      
+      if (inJson) {
+        currentJson += line + '\n';
+        // Count braces to track JSON object depth
+        for (const char of line) {
+          if (char === '{') braceDepth++;
+          if (char === '}') braceDepth--;
+        }
+        
+        // When we've closed the top-level object (braceDepth returns to 0)
+        if (braceDepth === 0 && currentJson.trim()) {
+          try {
+            models.push(JSON.parse(currentJson.trim()));
+          } catch (err) {
+            console.error('[models] Failed to parse JSON block:', currentJson.slice(0, 100), err instanceof Error ? err.message : 'Unknown error');
+          }
+          currentJson = '';
+          inJson = false;
+        }
       }
     }
     
@@ -86,6 +104,11 @@ export async function fetchZenModels(): Promise<Model[]> {
       });
 
     // Find max score and mark all models with that score as recommended
+    if (parsedModels.length === 0) {
+      console.error('[models] No valid free models found, using fallback');
+      throw new Error('No valid models found');
+    }
+    
     const maxScore = Math.max(...parsedModels.map(m => m.score ?? 10));
     return parsedModels.map(m => ({
       ...m,
