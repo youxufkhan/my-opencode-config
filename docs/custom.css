@@ -1,0 +1,6 @@
+/* Custom accent color - blue/purple theme for dev tool */
+:root {
+  --sl-color-accent-low: #1e1b4b;
+  --sl-color-accent: #6366f1;
+  --sl-color-accent-high: #a5b4fc;
+}
