@@ -9,7 +9,10 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:e2e": "bash tests/e2e/run.sh"
+    "test:e2e": "bash tests/e2e/run.sh",
+    "publish": "npm run build && npm publish",
+    "publish:beta": "npm run build && npm publish --tag beta",
+    "publish:latest": "npm run build && npm publish --tag latest"
   },
   "keywords": [
     "opencode",
