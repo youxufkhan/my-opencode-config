@@ -1,6 +1,6 @@
 {
   "name": "my-opencode-config",
-  "version": "0.1.0-beta.3",
+  "version": "0.1.0-beta.4",
   "description": "The ultimate OpenCode setup CLI. Automate your configuration and unlock the power of free and premium models in seconds.",
   "main": "dist/index.js",
   "bin": {
