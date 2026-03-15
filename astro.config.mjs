@@ -2,8 +2,9 @@ import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://youxufkhan.github.io/my-opencode-config',
-  srcDir: './docs',
+  site: 'https://youxufkhan.github.io',
+  base: '/my-opencode-config',
+  outDir: './docs/dist',
   integrations: [
     starlight({
       title: 'my-opencode-config',
@@ -35,5 +36,4 @@ export default defineConfig({
       ],
     }),
   ],
-  outDir: './docs/dist',
 });
