@@ -9,7 +9,7 @@
 
 ## Why It Exists
 
-OpenCode is powerful, but unlocking its full potential with free, high-quality models can be complex. This wizard automates the entire setup—from authentication to plugin installation—so you can get a supercharged, cost-effective OpenCode environment running in minutes, not hours.
+OpenCode is powerful, but unlocking its full potential with free, high-quality models can be complex. This wizard automates the entire setup, from authentication to plugin installation, so you can get a supercharged, cost-effective OpenCode environment running in minutes, not hours.
 
 Its sole purpose is to make OpenCode great for free by leveraging OpenCode Zen models and Gemini free tier limits, providing a generous allowance for daily, medium-complexity tasks.
 
@@ -28,6 +28,17 @@ npx my-opencode-config
 - 🚀 **Superpowers Included**: Integrates the `superpowers` skill set for advanced agent capabilities.
 - 🔐 **Seamless Authentication**: Handles OAuth for OpenCode Zen and Google Gemini.
 - ⚙️ **Smart Configuration**: Sets up the GitHub MCP and configures agents to use free models by default.
+
+## Free vs. Paid Options
+
+This package is designed to help you utilize **free models at their best** without spending on API keys or subscriptions. By leveraging OpenCode Zen free tier and Google Gemini free tier limits, it provides a generous allowance for daily, medium-complexity tasks, at no cost.
+
+However, if you need access to a wider variety of models and higher usage limits, OpenCode offers subscription plans that are budget-friendly and provide excellent value:
+
+- **[OpenCode Go](https://opencode.ai/docs/go/)**: Perfect for users who want more model options at an affordable price.
+- **[OpenCode Zen](https://opencode.ai/docs/zen/)**: The recommended plan for power users who need the best available models and higher limits.
+
+These subscriptions are reasonably priced and designed to give you the best experience with OpenCode. If you find yourself needing more than the free tier offers, these plans are highly recommended.
 
 ## Prerequisites
 
