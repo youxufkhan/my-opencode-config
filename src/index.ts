@@ -4,7 +4,7 @@ import { intro, outro } from '@clack/prompts';
 import { isOpenCodeInstalled, installOpenCode } from './utils/opencode';
 import { getRequiredPlugins, mergePluginConfig } from './commands/plugins';
 import { fetchAllModels } from './commands/models';
-import { generateOpencodeConfig, generateOhMyOpencodeConfig } from './commands/config-templates';
+import { generateOpencodeConfig, generateOhMyOpenagentConfig } from './commands/config-templates';
 import { authenticateIfNeeded } from './commands/auth';
 import { promptConfirm, selectModel, withSpinner } from './utils/prompts';
 import { getConfigPath, configExists, readConfig, backupConfig, writeConfig } from './utils/config';
@@ -194,18 +194,18 @@ Options:
           await backupConfig('opencode.json');
           info('Backed up existing opencode.json');
         }
-        if (await configExists('oh-my-opencode.json')) {
-          await backupConfig('oh-my-opencode.json');
-          info('Backed up existing oh-my-opencode.json');
+        if (await configExists('oh-my-openagent.json')) {
+          await backupConfig('oh-my-openagent.json');
+          info('Backed up existing oh-my-openagent.json');
         }
         
         const newOpencodeConfig = generateOpencodeConfig(selections, opencodeConfig);
         await writeConfig('opencode.json', newOpencodeConfig);
         success('Written opencode.json');
         
-        const ohMyOpencodeConfig = generateOhMyOpencodeConfig(selections);
-        await writeConfig('oh-my-opencode.json', ohMyOpencodeConfig);
-        success('Written oh-my-opencode.json');
+        const ohMyOpenagentConfig = generateOhMyOpenagentConfig(selections);
+        await writeConfig('oh-my-openagent.json', ohMyOpenagentConfig);
+        success('Written oh-my-openagent.json');
       });
     } else {
       info('Skipped writing config files (dry-run)');
@@ -226,7 +226,7 @@ Options:
     console.log('  2. Run "opencode /connect" if not authenticated');
     console.log('\n💾 Config files:');
     console.log('  ~/.config/opencode/opencode.json');
-    console.log('  ~/.config/opencode/oh-my-opencode.json');
+    console.log('  ~/.config/opencode/oh-my-openagent.json');
     console.log('\n🔄 To restore previous config:');
     console.log('  Check ~/.config/opencode/backups/');
     

@@ -4,27 +4,9 @@
   "disabled_providers": ["anthropic", "openai", "cloudflare-ai-gateway", "azure", "deepseek"],
   "model": "opencode/minimax-m2.5-free",
   "small_model": "opencode/minimax-m2.5-free",
-  "mcp": {
-    "github": {
-      "command": [
-        "docker",
-        "run",
-        "-i",
-        "--rm",
-        "-e",
-        "GITHUB_PERSONAL_ACCESS_TOKEN",
-        "ghcr.io/github/github-mcp-server"
-      ],
-      "enabled": true,
-      "environment": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "github_pat_YOUR_TOKEN_HERE"
-      },
-      "type": "local"
-    }
-  },
   "plugin": [
     "opencode-gemini-auth@latest",
-    "oh-my-opencode@latest"
+    "oh-my-openagent@latest"
   ],
   "provider": {
     "google": {

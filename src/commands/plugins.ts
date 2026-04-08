@@ -2,7 +2,7 @@
 export function getRequiredPlugins(): string[] {
   return [
     'opencode-gemini-auth@latest',
-    'oh-my-opencode@latest',
+    'oh-my-openagent@latest',
   ];
 }
 

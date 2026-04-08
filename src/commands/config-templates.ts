@@ -10,7 +10,7 @@ export function generateOpencodeConfig(selections: UserSelections, existing: any
     small_model: selections.smallModel,
     plugin: [
       'opencode-gemini-auth@latest',
-      'oh-my-opencode@latest'
+      'oh-my-openagent@latest'
     ],
     provider: {
       google: {
@@ -45,9 +45,9 @@ export function generateOpencodeConfig(selections: UserSelections, existing: any
   return mergeConfigs(existing, updates);
 }
 
-export function generateOhMyOpencodeConfig(selections: UserSelections, existing: any = {}): object {
+export function generateOhMyOpenagentConfig(selections: UserSelections, existing: any = {}): object {
   const updates = {
-    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json',
+    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/main/assets/oh-my-openagent.schema.json',
     agents: {
       sisyphus: { model: selections.fastAgentModel, variant: 'max' },
       hephaestus: { model: selections.fastAgentModel, variant: 'max' },

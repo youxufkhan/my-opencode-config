@@ -24,10 +24,10 @@ npx my-opencode-config
 ## Key Features
 
 - 🔮 **Intelligent Model Discovery**: Finds and recommends the best-performing free models from OpenCode Zen.
-- 🔌 **Essential Plugins**: Installs and configures the popular `oh-my-opencode` agent harness to put your agent on steroids.
+- 🔌 **Essential Plugins**: Installs and configures the popular `oh-my-openagent` agent harness to put your agent on steroids.
 - 🚀 **Superpowers Included**: Integrates the `superpowers` skill set for advanced agent capabilities.
 - 🔐 **Seamless Authentication**: Handles OAuth for OpenCode Zen and Google Gemini.
-- ⚙️ **Smart Configuration**: Sets up the GitHub MCP and configures agents to use free models by default.
+- ⚙️ **Smart Configuration**: Configures agents to use free models by default.
 
 ## Free vs. Paid Options
 
