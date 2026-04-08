@@ -114,7 +114,8 @@ Options:
               const { promisify } = await import('util');
               const execAsync = promisify(exec);
               
-              await execAsync('git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers');
+              const superpowersPath = path.join(os.homedir(), '.config', 'opencode', 'superpowers');
+              await execAsync(`git clone https://github.com/obra/superpowers.git "${superpowersPath}"`);
               
               await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'plugins'), { recursive: true });
               await fs.mkdir(path.join(os.homedir(), '.config', 'opencode', 'skills'), { recursive: true });
