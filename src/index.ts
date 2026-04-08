@@ -19,6 +19,7 @@ interface UserSelections {
   fastAgentModel: string;
   powerfulAgentModel: string;
   installSuperpowers: boolean;
+  installAgencyAgents: boolean;
 }
 
 async function main() {
@@ -139,7 +140,48 @@ Options:
       }
     }
 
-    // Step 4: Authentication
+    step('Agency-Agents installation');
+    let installAgencyAgents = false;
+    
+    const existingAgencyAgents = await fs.access(
+      path.join(os.homedir(), '.config', 'opencode', 'agency')
+    ).then(() => true).catch(() => false);
+    
+    if (existingAgencyAgents) {
+      info('Agency-Agents is already installed.');
+    } else {
+      installAgencyAgents = await promptConfirm('Would you like to install Agency-Agents?');
+      
+      if (installAgencyAgents) {
+        if (dryRun) {
+          info('Skipped Agency-Agents installation (dry-run)');
+        } else {
+          try {
+            await withSpinner('Installing Agency-Agents...', async () => {
+              const { exec } = await import('child_process');
+              const { promisify } = await import('util');
+              const execAsync = promisify(exec);
+              
+              const tempDir = path.join(os.tmpdir(), 'agency-agents-' + Date.now());
+              await fs.mkdir(tempDir, { recursive: true });
+              
+              await execAsync(`git clone https://github.com/msitarzewski/agency-agents.git "${tempDir}"`);
+              
+              await execAsync(`chmod +x "${tempDir}/scripts/convert.sh" && cd "${tempDir}" && ./scripts/convert.sh`);
+              
+              await execAsync(`chmod +x "${tempDir}/scripts/install.sh" && cd "${tempDir}" && ./scripts/install.sh --tool opencode`);
+              
+              await fs.rm(tempDir, { recursive: true, force: true });
+            });
+            
+            success('Agency-Agents installed successfully!');
+          } catch (e: any) {
+            error(`Failed to install Agency-Agents: ${e.message}`);
+          }
+        }
+      }
+    }
+
     step('Authentication');
     await authenticateIfNeeded();
 
@@ -182,6 +224,7 @@ Options:
       fastAgentModel: `opencode/${fastAgentModel.id}`,
       powerfulAgentModel: `google/${powerfulAgentModel.id}`,
       installSuperpowers,
+      installAgencyAgents,
     };
     
     success('Models selected!');
@@ -222,6 +265,7 @@ Options:
     console.log(`  Fast agents: ${selections.fastAgentModel}`);
     console.log(`  Powerful agents: ${selections.powerfulAgentModel}`);
     console.log(`  Superpowers: ${installSuperpowers ? 'Yes' : 'No'}`);
+    console.log(`  Agency-Agents: ${installAgencyAgents ? 'Yes' : 'No'}`);
     console.log('\n📋 Next steps:');
     console.log('  1. Restart OpenCode');
     console.log('  2. Run "opencode /connect" if not authenticated');
