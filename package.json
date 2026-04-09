@@ -1,10 +1,10 @@
 {
   "name": "my-opencode-config",
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.7",
   "description": "The ultimate OpenCode setup CLI. Automate your configuration and unlock the power of free and premium models in seconds.",
   "main": "dist/index.js",
   "bin": {
-    "my-opencode-config": "./dist/index.js"
+    "my-opencode-config": "dist/index.js"
   },
   "files": [
     "dist/",
@@ -17,7 +17,7 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:e2e": "bash tests/e2e/run.sh",
-    "publish": "npm run build && npm publish",
+    "publish": "npm run build && npm publish --tag beta",
     "publish:beta": "npm run build && npm publish --tag beta",
     "publish:latest": "npm run build && npm publish --tag latest"
   },
