@@ -33,6 +33,7 @@ export interface UserSelections {
   fastAgentModel: string; // e.g., "opencode/minimax-m2.5-free"
   powerfulAgentModel: string; // e.g., "google/gemini-2.5-flash"
   installSuperpowers: boolean;
+  installAgencyAgents: boolean;
 }
 
 // CLI options
