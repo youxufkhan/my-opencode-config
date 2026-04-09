@@ -143,9 +143,26 @@ Options:
     step('Agency-Agents installation');
     let installAgencyAgents = false;
     
-    const existingAgencyAgents = await fs.access(
-      path.join(os.homedir(), '.config', 'opencode', 'agency')
-    ).then(() => true).catch(() => false);
+    const checkAgencyAgentsInstalled = async (): Promise<boolean> => {
+      const agentFiles = [
+        'agents-orchestrator.md',
+        'frontend-developer.md',
+        'backend-architect.md',
+        'paid-media-auditor.md',
+        'reality-checker.md',
+      ];
+      const agentDir = path.join(os.homedir(), '.config', 'opencode', 'agents');
+      
+      try {
+        const files = await fs.readdir(agentDir);
+        const matchCount = agentFiles.filter(f => files.includes(f)).length;
+        return matchCount >= 4;
+      } catch {
+        return false;
+      }
+    };
+    
+    const existingAgencyAgents = await checkAgencyAgentsInstalled();
     
     if (existingAgencyAgents) {
       info('Agency-Agents is already installed.');
