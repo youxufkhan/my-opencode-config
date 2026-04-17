@@ -65,7 +65,6 @@ export async function fetchZenModels(): Promise<Model[]> {
       
       if (line.trim() === '{') {
         inJson = true;
-        braceDepth = 0;
       }
       
       if (inJson) {
