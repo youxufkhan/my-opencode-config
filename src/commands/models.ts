@@ -23,14 +23,7 @@ function calculateScore(capabilities: ModelCapabilities | undefined): number {
   return score;
 }
 
-// Known free Zen models (as fallback)
-const KNOWN_ZEN_FREE_MODELS = [
-  { id: 'minimax-m2.5-free', name: 'MiniMax M2.5 Free' },
-  { id: 'zen-free', name: 'Zen Free' },
-  { id: 'glm-5-free', name: 'GLM-5 Free' },
-];
-
-// Known Gemini models
+// Known Gemini models (stable list - Gemini model IDs don't change frequently)
 const KNOWN_GEMINI_MODELS = [
   { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', recommended: true },
   { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro' },
@@ -96,7 +89,7 @@ export async function fetchZenModels(): Promise<Model[]> {
         return {
           id: m.id,
           name: m.name || m.id,
-          provider: 'zen' as const,
+          provider: 'opencode' as const,
           isFree: true,
           capabilities,
           score: calculateScore(capabilities),
@@ -115,12 +108,19 @@ export async function fetchZenModels(): Promise<Model[]> {
       isRecommended: (m.score ?? 10) === maxScore,
     }));
   } catch {
-    // Fallback to known models
+    // Fallback: minimal list for network failures only
   }
   
-  return KNOWN_ZEN_FREE_MODELS.map(m => ({
+  // Minimal fallback - only most stable free models
+  const MINIMAL_FALLBACK = [
+    { id: 'hy3-preview-free', name: 'HY3 Preview Free' },
+    { id: 'minimax-m2.5-free', name: 'MiniMax M2.5 Free' },
+    { id: 'zen-free', name: 'Zen Free' },
+  ];
+  
+  return MINIMAL_FALLBACK.map(m => ({
     ...m,
-    provider: 'zen' as const,
+    provider: 'opencode' as const,
     isFree: true,
   }));
 }
@@ -141,4 +141,81 @@ export async function fetchAllModels(): Promise<{ zen: Model[], gemini: Model[] 
   ]);
   
   return { zen, gemini };
+}
+
+export async function fetchModelsForProvider(provider: 'google' | 'opencode'): Promise<Model[]> {
+  if (provider === 'google') {
+    return getGeminiModels();
+  } else {
+    return fetchZenModels();
+  }
+}
+
+let cachedModels: string[] | null = null;
+
+async function getModelsList(): Promise<string[]> {
+  if (cachedModels) return cachedModels;
+  
+  try {
+    const { stdout } = await execAsync(`opencode models`, { timeout: 10000 });
+    cachedModels = stdout.split('\n').filter(line => line.trim());
+    return cachedModels;
+  } catch {
+    return [];
+  }
+}
+
+export async function validateModel(model: string): Promise<boolean> {
+  const models = await getModelsList();
+  return models.some(m => m.includes(model));
+}
+
+export async function validateModels(config: any, configType: 'opencode' | 'oh-my-openagent'): Promise<string[]> {
+  const errors: string[] = [];
+  const allModels = await getModelsList();
+  
+  if (configType === 'opencode') {
+    const check = (model: string, field: string) => {
+      if (model && !allModels.some(m => m.includes(model))) {
+        errors.push(`${field} not found: ${model}`);
+      }
+    };
+    
+    if (config.model) check(config.model, 'model');
+    if (config.small_model) check(config.small_model, 'small_model');
+    
+    if (config.provider?.opencode?.models) {
+      const modelKeys = Object.keys(config.provider.opencode.models);
+      for (const key of modelKeys) {
+        const modelId = `opencode/${key}`;
+        if (!allModels.some(m => m.includes(modelId))) {
+          errors.push(`Provider model not found: ${modelId}`);
+        }
+      }
+    }
+  } else if (configType === 'oh-my-openagent') {
+    const check = (model: string, field: string) => {
+      if (model && !allModels.some(m => m.includes(model))) {
+        errors.push(`${field} not found: ${model}`);
+      }
+    };
+    
+    if (config.agents) {
+      for (const [agent, agentConfig] of Object.entries(config.agents)) {
+        if (agentConfig && typeof agentConfig === 'object' && 'model' in agentConfig) {
+          check((agentConfig as any).model, `agents.${agent}.model`);
+        }
+      }
+    }
+    
+    if (config.categories) {
+      for (const [category, catConfig] of Object.entries(config.categories)) {
+        if (catConfig && typeof catConfig === 'object' && 'model' in catConfig) {
+          check((catConfig as any).model, `categories.${category}.model`);
+        }
+      }
+    }
+  }
+  
+  return errors;
 }

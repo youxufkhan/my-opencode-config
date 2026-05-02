@@ -344,11 +344,6 @@ Options:
 
     // Step 7: Write configs
     step('Writing configurations');
-
-    // Generate configs first so they're accessible for validation
-    const newOpencodeConfig = generateOpencodeConfig(selections, opencodeConfig);
-    const ohMyOpenagentConfig = generateOhMyOpenagentConfig(selections);
-
     
     if (!dryRun) {
       await withSpinner('Writing configuration files...', async () => {
@@ -361,9 +356,11 @@ Options:
           info('Backed up existing oh-my-openagent.json');
         }
         
+        const newOpencodeConfig = generateOpencodeConfig(selections, opencodeConfig);
         await writeConfig('opencode.json', newOpencodeConfig);
         success('Written opencode.json');
         
+        const ohMyOpenagentConfig = generateOhMyOpenagentConfig(selections);
         await writeConfig('oh-my-openagent.json', ohMyOpenagentConfig);
         success('Written oh-my-openagent.json');
       });

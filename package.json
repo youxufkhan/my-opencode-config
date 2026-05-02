@@ -1,13 +1,20 @@
 {
   "name": "my-opencode-config",
-  "version": "0.1.0-beta.7",
+  "version": "0.2.0",
   "description": "The ultimate OpenCode setup CLI. Automate your configuration and unlock the power of free and premium models in seconds.",
   "main": "dist/index.js",
   "bin": {
     "my-opencode-config": "dist/index.js"
   },
   "files": [
-    "dist/",
+    "dist/commands",
+    "dist/utils",
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/types.js",
+    "dist/types.d.ts",
+    "dist/content.config.js",
+    "dist/content.config.d.ts",
     "package.json"
   ],
   "scripts": {
@@ -17,7 +24,7 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:e2e": "bash tests/e2e/run.sh",
-    "publish": "npm run build && npm publish --tag beta",
+    "publish": "npm run build && npm publish --tag latest",
     "publish:beta": "npm run build && npm publish --tag beta",
     "publish:latest": "npm run build && npm publish --tag latest"
   },
@@ -51,7 +58,7 @@
   },
   "devDependencies": {
     "@astrojs/starlight": "^0.38.1",
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.19.39",
     "astro": "^6.0.4",
     "esbuild": "^0.19.0",
     "ts-node": "^10.9.0",
