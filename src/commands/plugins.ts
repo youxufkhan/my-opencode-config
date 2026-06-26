@@ -7,8 +7,15 @@ export function getRequiredPlugins(): string[] {
 
 // Merge plugins - add required if missing
 export function mergePluginConfig(existingPlugins: string[] = [], required: string[]): string[] {
-  const existing = new Set(existingPlugins);
-  const merged = [...existingPlugins];
+  let merged = [...existingPlugins];
+  
+  // Clean up legacy oh-my-openagent to avoid duplicate OMO plugin entries
+  const requiresOmo = required.some(p => p.startsWith('oh-my-opencode'));
+  if (requiresOmo) {
+    merged = merged.filter(p => p !== 'oh-my-openagent' && p !== 'oh-my-openagent@latest');
+  }
+
+  const existing = new Set(merged);
   
   for (const plugin of required) {
     const baseName = plugin.replace(/@latest$/, '');
@@ -21,5 +28,6 @@ export function mergePluginConfig(existingPlugins: string[] = [], required: stri
     }
   }
   
-  return merged;
+  // Deduplicate completely (in case existingPlugins had duplicates)
+  return [...new Set(merged)];
 }
