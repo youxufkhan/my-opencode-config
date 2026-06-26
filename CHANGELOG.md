@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-06-27
+
+### Added
+- **Teams Feature setup**: Added an interactive setup prompt to enable the newly released Teams feature in `oh-my-openagent`.
+- **Default config values**: Added `default_mode: 'ultrawork'` and `taskCleanupDelayMs: 3600000` to `oh-my-openagent` configuration.
+
+### Changed
+- **Removed Gemini support**: Deprecated and removed all Gemini-specific authentication flows, prompts, and config setups since the Google Gemini free tier has ended.
+- **Dynamic model fetching**: Streamlined the `models.ts` parser to capture the full verbose JSON output of `opencode models` dynamically, removing hardcoded fallbacks entirely.
+
+### Fixed
+- **JSON block parser**: Corrected parser state machine to prevent nested structures (like `tiers` or `cache` arrays/objects) from resetting parsing depth.
+
 ## [0.2.0] - 2026-05-03
 
 ### Fixed
