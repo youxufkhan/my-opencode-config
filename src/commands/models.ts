@@ -23,17 +23,7 @@ function calculateScore(capabilities: ModelCapabilities | undefined): number {
   return score;
 }
 
-// Known Gemini models (stable list - Gemini model IDs don't change frequently)
-const KNOWN_GEMINI_MODELS = [
-  { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', recommended: true },
-  { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro' },
-  { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash' },
-  { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash' },
-  { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro' },
-];
-
 export async function fetchZenModels(): Promise<Model[]> {
-  // Try to fetch from opencode CLI command - fallback to hardcoded list
   try {
     const { stdout } = await execAsync('opencode models opencode --verbose', {
       timeout: 30000,
@@ -56,9 +46,10 @@ export async function fetchZenModels(): Promise<Model[]> {
         continue;
       }
       
-      if (line.trim() === '{') {
+      if (!inJson && line.trim() === '{') {
         inJson = true;
         braceDepth = 0;
+        currentJson = '';
       }
       
       if (inJson) {
@@ -98,8 +89,7 @@ export async function fetchZenModels(): Promise<Model[]> {
 
     // Find max score and mark all models with that score as recommended
     if (parsedModels.length === 0) {
-      console.error('[models] No valid free models found, using fallback');
-      throw new Error('No valid models found');
+      throw new Error('No valid free models found from OpenCode API. Please check your connection.');
     }
     
     const maxScore = Math.max(...parsedModels.map(m => m.score ?? 10));
@@ -107,48 +97,15 @@ export async function fetchZenModels(): Promise<Model[]> {
       ...m,
       isRecommended: (m.score ?? 10) === maxScore,
     }));
-  } catch {
-    // Fallback: minimal list for network failures only
+  } catch (error: any) {
+    console.error(`[models] Failed to fetch models: ${error.message}`);
+    throw error;
   }
-  
-  // Minimal fallback - only most stable free models
-  const MINIMAL_FALLBACK = [
-    { id: 'hy3-preview-free', name: 'HY3 Preview Free' },
-    { id: 'minimax-m2.5-free', name: 'MiniMax M2.5 Free' },
-    { id: 'zen-free', name: 'Zen Free' },
-  ];
-  
-  return MINIMAL_FALLBACK.map(m => ({
-    ...m,
-    provider: 'opencode' as const,
-    isFree: true,
-  }));
 }
 
-export function getGeminiModels(): Model[] {
-  return KNOWN_GEMINI_MODELS.map(m => ({
-    id: m.id,
-    name: m.name,
-    provider: 'google' as const,
-    isRecommended: m.recommended,
-  }));
-}
-
-export async function fetchAllModels(): Promise<{ zen: Model[], gemini: Model[] }> {
-  const [zen, gemini] = await Promise.all([
-    fetchZenModels(),
-    Promise.resolve(getGeminiModels()),
-  ]);
-  
-  return { zen, gemini };
-}
-
-export async function fetchModelsForProvider(provider: 'google' | 'opencode'): Promise<Model[]> {
-  if (provider === 'google') {
-    return getGeminiModels();
-  } else {
-    return fetchZenModels();
-  }
+export async function fetchAllModels(): Promise<{ zen: Model[] }> {
+  const zen = await fetchZenModels();
+  return { zen };
 }
 
 let cachedModels: string[] | null = null;

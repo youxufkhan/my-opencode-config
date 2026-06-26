@@ -4,35 +4,14 @@ import { mergeConfigs } from '../utils/config';
 export function generateOpencodeConfig(selections: UserSelections, existing: any = {}): object {
   const updates = {
     $schema: 'https://opencode.ai/config.json',
-    enabled_providers: ['opencode', 'google'],
-    disabled_providers: ['anthropic', 'openai', 'cloudflare-ai-gateway', 'azure', 'deepseek'],
+    enabled_providers: ['opencode'],
+    disabled_providers: ['google', 'anthropic', 'openai', 'cloudflare-ai-gateway', 'azure', 'deepseek'],
     model: selections.mainModel,
     small_model: selections.smallModel,
     plugin: [
-      'opencode-gemini-auth@latest',
       'oh-my-opencode@latest'
     ],
     provider: {
-      google: {
-        models: {
-          'gemini-2.5-flash': {
-            options: {
-              thinkingConfig: {
-                includeThoughts: true,
-                thinkingBudget: 8192
-              }
-            }
-          },
-          'gemini-2.5-pro': {
-            options: {
-              thinkingConfig: {
-                includeThoughts: true,
-                thinkingBudget: 8192
-              }
-            }
-          }
-        }
-      },
       opencode: {
         models: {
           [selections.mainModel.replace('opencode/', '')]: {},
@@ -46,10 +25,23 @@ export function generateOpencodeConfig(selections: UserSelections, existing: any
 }
 
 export function generateOhMyOpenagentConfig(selections: UserSelections, existing: any = {}): object {
+  const baseUpdates: any = {
+    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/main/assets/oh-my-openagent.schema.json',
+    default_mode: 'ultrawork',
+    taskCleanupDelayMs: 3600000,
+  };
+
+  if (selections.enableTeams) {
+    baseUpdates.teams = {
+      enabled: true,
+      coordinator_agent: 'oracle'
+    };
+  }
+
   // If user selected granular agent models, use them directly
   if (selections.agentModels && Object.keys(selections.agentModels).length > 0) {
     const updates = {
-      $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/main/assets/oh-my-openagent.schema.json',
+      ...baseUpdates,
       agents: {
         sisyphus: { model: selections.agentModels['sisyphus'] || selections.fastAgentModel, variant: 'max' },
         hephaestus: { model: selections.agentModels['hephaestus'] || selections.fastAgentModel, variant: 'max' },
@@ -79,7 +71,7 @@ export function generateOhMyOpenagentConfig(selections: UserSelections, existing
   
   // Fall back to two-role model structure (fastAgentModel and powerfulAgentModel)
   const updates = {
-    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/main/assets/oh-my-openagent.schema.json',
+    ...baseUpdates,
     agents: {
       sisyphus: { model: selections.fastAgentModel, variant: 'max' },
       hephaestus: { model: selections.fastAgentModel, variant: 'max' },

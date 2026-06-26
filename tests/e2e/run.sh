@@ -48,15 +48,13 @@ docker run --rm \
             }
         \"
         
-        # Test model fetching
+        # Test model validation export
         node -e \"
-            const { getGeminiModels } = require('./dist/commands/models');
-            const models = getGeminiModels();
-            const hasRecommended = models.some(m => m.isRecommended);
-            if (hasRecommended) {
-                console.log('✅ Model test passed');
+            const { validateModel } = require('./dist/commands/models');
+            if (typeof validateModel === 'function') {
+                console.log('✅ Model export test passed');
             } else {
-                console.log('❌ Model test failed');
+                console.log('❌ Model export test failed');
                 process.exit(1);
             }
         \"

@@ -3,7 +3,7 @@
 import { intro, outro } from '@clack/prompts';
 import { isOpenCodeInstalled, installOpenCode } from './utils/opencode';
 import { getRequiredPlugins, mergePluginConfig } from './commands/plugins';
-import { fetchAllModels, fetchModelsForProvider, validateModels } from './commands/models';
+import { fetchAllModels, validateModels } from './commands/models';
 import { generateOpencodeConfig, generateOhMyOpenagentConfig } from './commands/config-templates';
 import { authenticateIfNeeded } from './commands/auth';
 import { 
@@ -225,10 +225,16 @@ Options:
     step('Authentication');
     await authenticateIfNeeded();
 
+    step('Teams Feature');
+    const enableTeams = await promptConfirm('Would you like to enable the Teams feature in oh-my-openagent?');
+    if (enableTeams) {
+      info('Teams feature will be enabled.');
+    }
+
     // Step 5-6: Model selection
     step('Model selection');
     
-    const { zen: zenModels, gemini: geminiModels } = await withSpinner('Fetching available models...', () => fetchAllModels());
+    const { zen: zenModels } = await withSpinner('Fetching available models...', () => fetchAllModels());
     
     // Ask user for their model selection strategy
     const modelStrategy = await selectModelStrategy();
@@ -241,8 +247,7 @@ Options:
       
       const singleModel = await selectModelWithProvider(
         'Select your model (will be used for all tasks and agents):',
-        zenModels,
-        geminiModels
+        zenModels
       );
       
       if (!singleModel) {
@@ -258,6 +263,7 @@ Options:
         modelStrategy: 'single',
         installSuperpowers,
         installAgencyAgents,
+        enableTeams,
       };
     } else {
       // Individual model selection for main, small, and agents
@@ -266,8 +272,7 @@ Options:
       // Select main model
       const mainModel = await selectModelWithProvider(
         'Select your main model (for general OpenCode tasks):',
-        zenModels,
-        geminiModels
+        zenModels
       );
       
       if (!mainModel) {
@@ -278,8 +283,7 @@ Options:
       // Select small model
       const smallModel = await selectModelWithProvider(
         'Select your small model (for quick tasks):',
-        zenModels,
-        geminiModels
+        zenModels
       );
       
       if (!smallModel) {
@@ -300,8 +304,7 @@ Options:
         
         const agentModel = await selectModelWithProvider(
           'Select model for all agents and categories:',
-          zenModels,
-          geminiModels
+          zenModels
         );
         
         if (!agentModel) {
@@ -318,8 +321,7 @@ Options:
         agentModels = await selectAgentCategoryModels(
           AGENT_NAMES,
           CATEGORY_NAMES,
-          zenModels,
-          geminiModels
+          zenModels
         );
         
         // For backward compatibility, derive fastAgentModel and powerfulAgentModel
@@ -337,6 +339,7 @@ Options:
         agentModels,
         installSuperpowers,
         installAgencyAgents,
+        enableTeams,
       };
     }
     
@@ -403,6 +406,7 @@ Options:
     }
     console.log(`  Superpowers: ${installSuperpowers ? 'Yes' : 'No'}`);
     console.log(`  Agency-Agents: ${installAgencyAgents ? 'Yes' : 'No'}`);
+    console.log(`  Teams Mode: ${enableTeams ? 'Enabled' : 'Disabled'}`);
     console.log('\n📋 Next steps:');
     console.log('  1. Restart OpenCode');
     console.log('  2. Run "opencode /connect" if not authenticated');

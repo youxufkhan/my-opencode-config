@@ -12,7 +12,7 @@ export interface ModelCapabilities {
 export interface Model {
   id: string;
   name: string;
-  provider: 'opencode' | 'google';
+  provider: 'opencode';
   isFree?: boolean;
   isRecommended?: boolean;
   score?: number;
@@ -31,11 +31,12 @@ export interface UserSelections {
   mainModel: string;      // e.g., "opencode/minimax-m2.5-free"
   smallModel: string;     // e.g., "opencode/minimax-m2.5-free"
   fastAgentModel: string; // e.g., "opencode/minimax-m2.5-free"
-  powerfulAgentModel: string; // e.g., "google/gemini-2.5-flash"
+  powerfulAgentModel: string;
   modelStrategy: 'single' | 'individual'; // Whether user wants one model for all or different per role
-  agentModels?: Record<string, string>; // Optional: granular per-agent models (e.g., { sisyphus: "google/gemini-2.5-flash", oracle: "google/gemini-2.5-pro" })
+  agentModels?: Record<string, string>; // Optional: granular per-agent models
   installSuperpowers: boolean;
   installAgencyAgents: boolean;
+  enableTeams: boolean;
 }
 
 // CLI options
@@ -55,5 +56,4 @@ export interface OpenCodeStatus {
 // Auth status for providers
 export interface AuthStatus {
   zen: boolean;
-  gemini: boolean;
 }

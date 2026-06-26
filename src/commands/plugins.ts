@@ -1,7 +1,6 @@
 // Required plugins for OpenCode
 export function getRequiredPlugins(): string[] {
   return [
-    'opencode-gemini-auth@latest',
     'oh-my-opencode@latest',
   ];
 }

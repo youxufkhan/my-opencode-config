@@ -43,24 +43,6 @@ export async function selectModelStrategy(): Promise<'single' | 'individual'> {
   return strategy as 'single' | 'individual';
 }
 
-export async function selectProvider(): Promise<'google' | 'opencode'> {
-  const provider = await select({
-    message: 'Which provider would you like to use?',
-    options: [
-      {
-        value: 'google',
-        label: 'Google Gemini',
-      },
-      {
-        value: 'opencode',
-        label: 'OpenCode Zen',
-      },
-    ],
-  });
-
-  return provider as 'google' | 'opencode';
-}
-
 export async function selectModelFromProvider(
   message: string,
   models: Model[]
@@ -86,13 +68,10 @@ export async function selectModelFromProvider(
 
 export async function selectModelWithProvider(
   message: string,
-  zenModels: Model[],
-  geminiModels: Model[]
+  zenModels: Model[]
 ): Promise<string | null> {
-  const provider = await selectProvider();
-
-  const availableModels = provider === 'google' ? geminiModels : zenModels;
-  const selectedModel = await selectModelFromProvider(message, availableModels);
+  // Since we only use OpenCode now, directly ask for the model
+  const selectedModel = await selectModelFromProvider(message, zenModels);
 
   if (!selectedModel) return null;
 
@@ -102,8 +81,7 @@ export async function selectModelWithProvider(
 export async function selectAgentCategoryModels(
   agents: string[],
   categories: string[],
-  zenModels: Model[],
-  geminiModels: Model[]
+  zenModels: Model[]
 ): Promise<Record<string, string>> {
   const agentModels: Record<string, string> = {};
 
@@ -113,8 +91,7 @@ export async function selectAgentCategoryModels(
   for (const agent of agents) {
     const model = await selectModelWithProvider(
       `Select model for agent: ${agent}`,
-      zenModels,
-      geminiModels
+      zenModels
     );
 
     if (model) {
@@ -126,8 +103,7 @@ export async function selectAgentCategoryModels(
   for (const category of categories) {
     const model = await selectModelWithProvider(
       `Select model for category: ${category}`,
-      zenModels,
-      geminiModels
+      zenModels
     );
 
     if (model) {
