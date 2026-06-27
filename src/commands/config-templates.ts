@@ -26,15 +26,15 @@ export function generateOpencodeConfig(selections: UserSelections, existing: any
 
 export function generateOhMyOpenagentConfig(selections: UserSelections, existing: any = {}): object {
   const baseUpdates: any = {
-    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/main/assets/oh-my-openagent.schema.json',
-    default_mode: 'ultrawork',
-    taskCleanupDelayMs: 3600000,
+    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json',
   };
 
   if (selections.enableTeams) {
-    baseUpdates.teams = {
+    baseUpdates.team_mode = {
       enabled: true,
-      coordinator_agent: 'oracle'
+      max_parallel_members: 4,
+      max_members: 8,
+      tmux_visualization: false
     };
   }
 

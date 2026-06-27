@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.2] - 2026-06-27
+
+### Fixed
+- **oh-my-openagent config schema**: Fixed schema validation issue by changing `teams` property to `team_mode` and updating schema URL. Removed invalid `default_mode` and `taskCleanupDelayMs` properties from root level.
+
 ## [0.3.0] - 2026-06-27
 
 ### Added
