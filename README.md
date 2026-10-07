@@ -1,71 +1,110 @@
 # my-opencode-config
 
-> An interactive setup wizard to configure OpenCode with powerful free models and essential tools.
+<p align="center">
+  <img src="assets/readme/hero.svg" alt="my-opencode-config - The Ultimate OpenCode Setup Wizard" width="100%">
+</p>
 
-[![npm version](https://img.shields.io/npm/v/my-opencode-config.svg)](https://www.npmjs.com/package/my-opencode-config)
-[![npm downloads](https://img.shields.io/npm/dw/my-opencode-config)](https://www.npmjs.com/package/my-opencode-config)
-[![License: MIT](https://img.shields.io/npm/l/my-opencode-config)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/node/v/my-opencode-config)](https://nodejs.org)
+<p align="center">
+  <a href="https://www.npmjs.com/package/my-opencode-config"><img src="https://img.shields.io/npm/v/my-opencode-config.svg?style=flat-square&color=6366F1" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/my-opencode-config"><img src="https://img.shields.io/npm/dw/my-opencode-config?style=flat-square&color=8B5CF6" alt="npm downloads"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/my-opencode-config?style=flat-square&color=10B981" alt="License: MIT"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/my-opencode-config?style=flat-square&color=38BDF8" alt="Node.js"></a>
+</p>
 
-## Why It Exists
+---
 
-OpenCode is powerful, but unlocking its full potential with free, high-quality models can be complex. This wizard automates the entire setup, from authentication to plugin installation, so you can get a supercharged, cost-effective OpenCode environment running in minutes, not hours.
+## 💡 Why It Exists
 
-Its sole purpose is to make OpenCode great for free by leveraging OpenCode Zen models and Gemini free tier limits, providing a generous allowance for daily, medium-complexity tasks.
+[OpenCode](https://github.com/anomalyco/opencode) is an ultra-powerful AI coding CLI, but setting it up with multi-agent harnesses like [Oh My OpenAgent (OmO)](https://github.com/code-yeongyu/oh-my-openagent) and routing its sub-agents to **free LLMs** usually requires complex manual configuration.
 
-## Quick Start
+**`my-opencode-config`** is an interactive setup wizard that automates the entire process in under 60 seconds:
+- Automatically detects and installs OpenCode if needed.
+- Configures required plugins (`oh-my-opencode@latest`).
+- Dynamically discovers free models from OpenCode Zen.
+- Generates fully populated, modern configurations for both `opencode.json` and the new OmO v5 **`~/.omo/omo.jsonc`** unified configuration.
 
-Run the setup wizard directly without installation. This is the fastest way to get started.
+---
+
+## 🚀 Quick Start
+
+Run the setup wizard instantly with `pnpm dlx` (no installation required):
 
 ```bash
 pnpm dlx my-opencode-config
 ```
 
-## Key Features
-
-- 🔮 **Intelligent Model Discovery**: Finds and recommends the best-performing free models from OpenCode Zen.
-- 🔌 **Essential Plugins**: Installs and configures the popular `oh-my-openagent` (`oh-my-opencode`) multi-agent harness with modern `omo.jsonc` unified configuration.
-- 🚀 **Superpowers Included**: Integrates the `superpowers` skill set for advanced agent capabilities.
-- 🔐 **Seamless Authentication**: Handles OAuth for OpenCode.
-- ⚙️ **Smart Configuration**: Configures agents to use free models by default across `~/.config/opencode/opencode.json` and `~/.omo/omo.jsonc`.
-
-## Free vs. Paid Options
-
-This package is designed to help you utilize **free models at their best** without spending on API keys or subscriptions. By leveraging OpenCode Zen free tier limits, it provides a generous allowance for daily, medium-complexity tasks, at no cost.
-
-However, if you need access to a wider variety of models and higher usage limits, OpenCode offers subscription plans that are budget-friendly and provide excellent value:
-
-- **[OpenCode Go](https://opencode.ai/docs/go/)**: Perfect for users who want more model options at an affordable price.
-- **[OpenCode Zen](https://opencode.ai/docs/zen/)**: The recommended plan for power users who need the best available models and higher limits.
-
-These subscriptions are reasonably priced and designed to give you the best experience with OpenCode. If you find yourself needing more than the free tier offers, these plans are highly recommended.
-
-## Prerequisites
-
-- **Node.js**: `v18.0.0` or higher.
-- **OpenCode**: An existing installation is required.
-
-## Installation
-
-Alternatively, you can install the CLI globally for easier access.
+Alternatively, install it globally for convenience:
 
 ```bash
 pnpm add -g my-opencode-config
-```
-Then, run the wizard:
-```bash
 my-opencode-config
 ```
 
-## References
+---
 
-This tool stands on the shoulders of giants. Check out the projects that make it possible:
+## ✨ Key Features
+
+| Feature | Description |
+| :--- | :--- |
+| 🔮 **Dynamic Model Discovery** | Automatically scans OpenCode Zen for available free models (Gemini, Minimax, DeepSeek, Qwen) and ranks them by capabilities. |
+| 🤖 **OmO v5 Unified Support** | Writes the new `~/.omo/omo.jsonc` configuration, assigning specialized sub-agents (`sisyphus`, `oracle`, `plan-consultant`, `librarian`) to free models. |
+| 🛡️ **Harness Mirroring** | Mirrors agent & category rules into `[opencode]` blocks for complete multi-harness compatibility. |
+| 🚀 **Superpowers & Agency-Agents** | Optional 1-click installer for `superpowers` skills and `agency-agents` specialized role suites. |
+| 🔄 **Safe Backups** | Automatically backs up your previous configurations before making changes, stored in `~/.config/opencode/backups/`. |
+
+---
+
+## ⚙️ Config Files Managed
+
+The wizard reads and generates two core configuration files:
+
+```
+~/.config/opencode/opencode.json  → Core OpenCode settings & model provider definitions
+~/.omo/omo.jsonc                  → OmO v5 multi-agent orchestrator & sub-agent model map
+```
+
+### Generated `omo.jsonc` Example
+
+```jsonc
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json",
+  "agents": {
+    "sisyphus": { "model": "opencode/minimax-m2.5-free", "reasoning": "max" },
+    "oracle": { "model": "google/gemini-2.5-flash", "reasoning": "high" },
+    "plan-consultant": { "model": "opencode/minimax-m2.5-free", "reasoning": "max" },
+    "librarian": { "model": "opencode/minimax-m2.5-free" }
+  },
+  "[opencode]": {
+    "team_mode": { "enabled": true, "max_parallel_members": 4 }
+  }
+}
+```
+
+---
+
+## 💳 Free vs. Paid Tier Support
+
+This package is optimized to unlock **maximum value from free models** without spending on subscriptions or API keys.
+
+If you eventually need access to higher usage limits or specialized frontier models, OpenCode offers budget-friendly subscription plans:
+- **[OpenCode Go](https://opencode.ai/docs/go/)**: Affordable plan with expanded model options.
+- **[OpenCode Zen](https://opencode.ai/docs/zen/)**: Premium plan for power users needing higher rate limits.
+
+---
+
+## 📚 References & Credit
+
+This tool integrates and automates setup for these incredible open-source projects:
 
 - **OpenCode**: [https://github.com/anomalyco/opencode](https://github.com/anomalyco/opencode)
-- **oh-my-openagent**: [https://github.com/code-yeongyu/oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent)
+- **Oh My OpenAgent (OmO)**: [https://github.com/code-yeongyu/oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent)
 - **Superpowers**: [https://github.com/obra/superpowers](https://github.com/obra/superpowers)
 
-## Changelog
+---
 
-See [CHANGELOG.md](CHANGELOG.md) for release notes and version history.
+## 📜 License & Release Notes
+
+- **License**: MIT © [Yousuf Khan](https://github.com/youxufkhan)
+- **Changelog**: See [CHANGELOG.md](CHANGELOG.md) for version history.
+
 <img src="https://my-opencode-config.goatcounter.com/count?p=/readme">

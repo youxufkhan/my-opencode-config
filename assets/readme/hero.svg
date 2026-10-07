@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 440" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0D14" />
+      <stop offset="50%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#050811" />
+    </linearGradient>
+
+    <!-- Accent Glow Gradient -->
+    <linearGradient id="accent-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#8B5CF6" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#EC4899" stop-opacity="0.8" />
+    </linearGradient>
+
+    <!-- Terminal Window Gradient -->
+    <linearGradient id="term-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- Badge Gradient -->
+    <linearGradient id="badge-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#312E81" />
+      <stop offset="100%" stop-color="#1E1B4B" />
+    </linearGradient>
+
+    <!-- Subtle Drop Shadows -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+    
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .title { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 800; font-size: 46px; fill: #FFFFFF; }
+    .subtitle { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 400; font-size: 20px; fill: #94A3B8; }
+    .badge-text { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 600; font-size: 13px; fill: #818CF8; }
+    .term-title { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-size: 13px; fill: #64748B; }
+    .code-prompt { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-size: 15px; font-weight: 600; fill: #38BDF8; }
+    .code-cmd { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-size: 15px; font-weight: 600; fill: #F1F5F9; }
+    .code-ok { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-size: 14px; fill: #4ADE80; }
+    .code-text { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-size: 14px; fill: #CBD5E1; }
+    .code-muted { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-size: 13px; fill: #64748B; }
+    .code-highlight { font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-size: 14px; font-weight: 600; fill: #A78BFA; }
+  </style>
+
+  <!-- Background Layer -->
+  <rect width="1200" height="440" rx="16" fill="url(#bg-grad)" />
+
+  <!-- Ambient Glow Behind Terminal -->
+  <circle cx="900" cy="220" r="180" fill="#6366F1" opacity="0.15" filter="url(#glow)" />
+  <circle cx="200" cy="100" r="140" fill="#EC4899" opacity="0.1" filter="url(#glow)" />
+
+  <!-- Grid overlay pattern -->
+  <g opacity="0.05">
+    <path d="M0 40H1200 M0 80H1200 M0 120H1200 M0 160H1200 M0 200H1200 M0 240H1200 M0 280H1200 M0 320H1200 M0 360H1200 M0 400H1200" stroke="#FFFFFF" stroke-width="1" />
+    <path d="M100 0V440 M200 0V440 M300 0V440 M400 0V440 M500 0V440 M600 0V440 M700 0V440 M800 0V440 M900 0V440 M1000 0V440 M1100 0V440" stroke="#FFFFFF" stroke-width="1" />
+  </g>
+
+  <!-- Left Content Column -->
+  <g transform="translate(64, 70)">
+    <!-- Top Accent Pill -->
+    <rect x="0" y="0" width="168" height="28" rx="14" fill="url(#badge-grad)" stroke="#4338CA" stroke-width="1" />
+    <text x="14" y="19" class="badge-text">⚡ OPENCODE SETUP CLI</text>
+
+    <!-- Main Title with Gradient Accent -->
+    <text x="0" y="82" class="title">my-opencode-config</text>
+    
+    <!-- Accent Line -->
+    <rect x="0" y="98" width="480" height="4" rx="2" fill="url(#accent-glow)" />
+
+    <!-- Subtitle Description -->
+    <text x="0" y="140" class="subtitle">Automate your OpenCode environment with</text>
+    <text x="0" y="168" class="subtitle">free models &amp; OmO multi-agent orchestration.</text>
+
+    <!-- Feature Chips -->
+    <g transform="translate(0, 210)">
+      <!-- Chip 1: Zero Cost -->
+      <rect x="0" y="0" width="138" height="34" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="14" y="22" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#38BDF8">💎 100% Free Tier</text>
+
+      <!-- Chip 2: OmO v5 Ready -->
+      <rect x="150" y="0" width="144" height="34" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="164" y="22" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#A78BFA">🤖 OmO v5 Ready</text>
+
+      <!-- Chip 3: pnpm Native -->
+      <rect x="306" y="0" width="124" height="34" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="320" y="22" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#F472B6">🚀 pnpm Native</text>
+    </g>
+
+    <!-- Quick Run Command Box -->
+    <g transform="translate(0, 268)">
+      <rect x="0" y="0" width="430" height="46" rx="8" fill="#090D16" stroke="#334155" stroke-width="1" />
+      <text x="16" y="28" font-family="ui-monospace, monospace" font-size="14" font-weight="600" fill="#E2E8F0">
+        <tspan fill="#F43F5E">$ </tspan>pnpm dlx my-opencode-config
+      </text>
+    </g>
+  </g>
+
+  <!-- Right Terminal Window Preview -->
+  <g transform="translate(560, 50)" filter="url(#shadow)">
+    <!-- Terminal Outer Frame -->
+    <rect x="0" y="0" width="576" height="340" rx="12" fill="url(#term-grad)" stroke="#334155" stroke-width="1" />
+
+    <!-- Terminal Header Bar -->
+    <rect x="0" y="0" width="576" height="40" rx="12" fill="#0F172A" />
+    <!-- Window Control Buttons -->
+    <circle cx="20" cy="20" r="6" fill="#EF4444" />
+    <circle cx="40" cy="20" r="6" fill="#F59E0B" />
+    <circle cx="60" cy="20" r="6" fill="#10B981" />
+    <text x="288" y="24" text-anchor="middle" class="term-title">opencode-setup-wizard — bash</text>
+
+    <!-- Terminal Content Area -->
+    <g transform="translate(24, 66)">
+      <!-- Line 1: Command -->
+      <text x="0" y="0">
+        <tspan class="code-prompt">~ </tspan>
+        <tspan class="code-cmd">pnpm dlx my-opencode-config</tspan>
+      </text>
+
+      <!-- Line 2: Intro -->
+      <text x="0" y="28" class="code-highlight">◇ my-opencode-config — Interactive Setup Wizard</text>
+
+      <!-- Line 3: Step 1 -->
+      <text x="0" y="58">
+        <tspan class="code-ok">✔ </tspan>
+        <tspan class="code-text">Checking OpenCode installation... </tspan>
+        <tspan class="code-muted">Installed</tspan>
+      </text>
+
+      <!-- Line 4: Step 2 -->
+      <text x="0" y="86">
+        <tspan class="code-ok">✔ </tspan>
+        <tspan class="code-text">Configuring plugins... </tspan>
+        <tspan class="code-highlight">oh-my-opencode@latest</tspan>
+      </text>
+
+      <!-- Line 5: Step 3 -->
+      <text x="0" y="114">
+        <tspan class="code-ok">✔ </tspan>
+        <tspan class="code-text">Superpowers &amp; Agency-Agents... </tspan>
+        <tspan class="code-muted">Configured</tspan>
+      </text>
+
+      <!-- Line 6: Step 4 -->
+      <text x="0" y="142">
+        <tspan class="code-ok">✔ </tspan>
+        <tspan class="code-text">Fetching OpenCode Zen models... </tspan>
+        <tspan class="code-highlight">Found 12 free LLMs</tspan>
+      </text>
+
+      <!-- Line 7: Step 5 -->
+      <text x="0" y="170">
+        <tspan class="code-ok">✔ </tspan>
+        <tspan class="code-text">Generated configs:</tspan>
+      </text>
+
+      <!-- Line 8: Config files -->
+      <text x="24" y="196" class="code-highlight">└─ ~/.config/opencode/opencode.json</text>
+      <text x="24" y="220" class="code-highlight">└─ ~/.omo/omo.jsonc (OmO v5 Unified)</text>
+
+      <!-- Line 9: Success message -->
+      <text x="0" y="250" class="code-ok">└─ Setup Complete! Unlock full AI multi-agent power.</text>
+    </g>
+  </g>
+</svg>
