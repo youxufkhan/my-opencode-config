@@ -156,21 +156,32 @@ export async function validateModels(config: any, configType: 'opencode' | 'oh-m
         errors.push(`${field} not found: ${model}`);
       }
     };
-    
-    if (config.agents) {
-      for (const [agent, agentConfig] of Object.entries(config.agents)) {
-        if (agentConfig && typeof agentConfig === 'object' && 'model' in agentConfig) {
-          check((agentConfig as any).model, `agents.${agent}.model`);
+
+    const checkAgentGroup = (agentsObj: any, prefix: string) => {
+      if (!agentsObj || typeof agentsObj !== 'object') return;
+      for (const [agent, agentConfig] of Object.entries(agentsObj)) {
+        if (agentConfig && typeof agentConfig === 'object') {
+          if ('model' in agentConfig && typeof (agentConfig as any).model === 'string') {
+            check((agentConfig as any).model, `${prefix}.${agent}.model`);
+          }
+          if ('models' in agentConfig && Array.isArray((agentConfig as any).models)) {
+            for (let i = 0; i < (agentConfig as any).models.length; i++) {
+              const m = (agentConfig as any).models[i];
+              const modelStr = typeof m === 'string' ? m : m?.model;
+              if (modelStr) check(modelStr, `${prefix}.${agent}.models[${i}]`);
+            }
+          }
         }
       }
+    };
+    
+    checkAgentGroup(config.agents, 'agents');
+    checkAgentGroup(config.categories, 'categories');
+    if (config['[opencode]']?.agents) {
+      checkAgentGroup(config['[opencode]'].agents, '[opencode].agents');
     }
-    
-    if (config.categories) {
-      for (const [category, catConfig] of Object.entries(config.categories)) {
-        if (catConfig && typeof catConfig === 'object' && 'model' in catConfig) {
-          check((catConfig as any).model, `categories.${category}.model`);
-        }
-      }
+    if (config['[opencode]']?.categories) {
+      checkAgentGroup(config['[opencode]'].categories, '[opencode].categories');
     }
   }
   

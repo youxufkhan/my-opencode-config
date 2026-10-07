@@ -12,7 +12,7 @@ echo "=================================="
 # Build the project first
 echo "📦 Building project..."
 cd "$PROJECT_ROOT"
-npm run build
+pnpm run build
 
 # Check if Docker is available
 if ! command -v docker &> /dev/null; then

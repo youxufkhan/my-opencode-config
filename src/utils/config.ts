@@ -5,6 +5,9 @@ import { ConfigBackup } from '../types';
 
 // Get config path for a file
 export function getConfigPath(filename: string): string {
+  if (filename === 'omo.jsonc') {
+    return path.join(os.homedir(), '.omo', filename);
+  }
   return path.join(os.homedir(), '.config', 'opencode', filename);
 }
 
@@ -23,7 +26,11 @@ export async function readConfig(filename: string): Promise<object | null> {
   const configPath = getConfigPath(filename);
   try {
     const content = await fs.readFile(configPath, 'utf-8');
-    return JSON.parse(content);
+    // Strip comments and trailing commas if file is JSONC
+    const clean = content
+      .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1')
+      .replace(/,(\s*[}\]])/g, '$1');
+    return JSON.parse(clean);
   } catch (error: any) {
     if (error.code === 'ENOENT') return null;
     throw new Error(`Invalid JSON in ${filename}: ${error.message}`);
@@ -44,7 +51,9 @@ export async function backupConfig(filename: string): Promise<ConfigBackup | nul
     const content = await fs.readFile(configPath, 'utf-8');
     const backupDir = await ensureBackupDir();
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const backupPath = path.join(backupDir, `${filename}-${timestamp}.json`);
+    const ext = path.extname(filename);
+    const base = path.basename(filename, ext);
+    const backupPath = path.join(backupDir, `${base}-${timestamp}${ext}`);
     await fs.writeFile(backupPath, content, 'utf-8');
     return { path: backupPath, content, timestamp };
   } catch (error: any) {
@@ -60,10 +69,10 @@ export async function listBackups(): Promise<ConfigBackup[]> {
     const files = await fs.readdir(backupDir);
     const backups: ConfigBackup[] = [];
     for (const file of files) {
-      if (file.endsWith('.json')) {
+      if (file.endsWith('.json') || file.endsWith('.jsonc')) {
         const filePath = path.join(backupDir, file);
         const content = await fs.readFile(filePath, 'utf-8');
-        const timestamp = file.replace('.json', '').split('-').slice(-1).join('-');
+        const timestamp = file.replace(/\.(json|jsonc)$/, '').split('-').slice(-1).join('-');
         backups.push({ path: filePath, content, timestamp });
       }
     }
@@ -76,7 +85,8 @@ export async function listBackups(): Promise<ConfigBackup[]> {
 // Restore from backup
 export async function restoreBackup(backup: ConfigBackup): Promise<void> {
   const filename = path.basename(backup.path);
-  const originalPath = getConfigPath(filename.replace(/-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}.json$/, '.json'));
+  const originalFilename = filename.replace(/-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.(json|jsonc)$/, '.$1');
+  const originalPath = getConfigPath(originalFilename);
   await fs.writeFile(originalPath, backup.content, 'utf-8');
 }
 

@@ -26,7 +26,7 @@ export function generateOpencodeConfig(selections: UserSelections, existing: any
 
 export function generateOhMyOpenagentConfig(selections: UserSelections, existing: any = {}): object {
   const baseUpdates: any = {
-    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json',
+    $schema: 'https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json',
   };
 
   if (selections.enableTeams) {
@@ -40,29 +40,50 @@ export function generateOhMyOpenagentConfig(selections: UserSelections, existing
 
   // If user selected granular agent models, use them directly
   if (selections.agentModels && Object.keys(selections.agentModels).length > 0) {
+    const planConsultantModel = selections.agentModels['plan-consultant'] || selections.agentModels['metis'] || selections.fastAgentModel;
+    const planReviewerModel = selections.agentModels['plan-reviewer'] || selections.agentModels['momus'] || selections.powerfulAgentModel;
+
+    const agents = {
+      sisyphus: { model: selections.agentModels['sisyphus'] || selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+      hephaestus: { model: selections.agentModels['hephaestus'] || selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+      oracle: { model: selections.agentModels['oracle'] || selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+      librarian: { model: selections.agentModels['librarian'] || selections.fastAgentModel },
+      explore: { model: selections.agentModels['explore'] || selections.fastAgentModel },
+      'multimodal-looker': { model: selections.agentModels['multimodal-looker'] || selections.powerfulAgentModel },
+      prometheus: { model: selections.agentModels['prometheus'] || selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+      'plan-consultant': { model: planConsultantModel, reasoning: 'max', variant: 'max' },
+      metis: { model: planConsultantModel, reasoning: 'max', variant: 'max' },
+      'plan-reviewer': { model: planReviewerModel, reasoning: 'high', variant: 'high' },
+      momus: { model: planReviewerModel, reasoning: 'high', variant: 'high' },
+      atlas: { model: selections.agentModels['atlas'] || selections.fastAgentModel }
+    };
+
+    const categories = {
+      'visual-engineering': { model: selections.agentModels['visual-engineering'] || selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+      ultrabrain: { model: selections.agentModels['ultrabrain'] || selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+      deep: { model: selections.agentModels['deep'] || selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+      artistry: { model: selections.agentModels['artistry'] || selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+      quick: { model: selections.agentModels['quick'] || selections.fastAgentModel, reasoning: 'low', variant: 'low' },
+      'unspecified-low': { model: selections.agentModels['unspecified-low'] || selections.fastAgentModel, reasoning: 'low', variant: 'low' },
+      'unspecified-high': { model: selections.agentModels['unspecified-high'] || selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+      writing: { model: selections.agentModels['writing'] || selections.powerfulAgentModel }
+    };
+
     const updates = {
       ...baseUpdates,
-      agents: {
-        sisyphus: { model: selections.agentModels['sisyphus'] || selections.fastAgentModel, variant: 'max' },
-        hephaestus: { model: selections.agentModels['hephaestus'] || selections.fastAgentModel, variant: 'max' },
-        oracle: { model: selections.agentModels['oracle'] || selections.powerfulAgentModel, variant: 'high' },
-        librarian: { model: selections.agentModels['librarian'] || selections.fastAgentModel },
-        explore: { model: selections.agentModels['explore'] || selections.fastAgentModel },
-        'multimodal-looker': { model: selections.agentModels['multimodal-looker'] || selections.powerfulAgentModel },
-        prometheus: { model: selections.agentModels['prometheus'] || selections.fastAgentModel, variant: 'max' },
-        metis: { model: selections.agentModels['metis'] || selections.fastAgentModel, variant: 'max' },
-        momus: { model: selections.agentModels['momus'] || selections.powerfulAgentModel, variant: 'medium' },
-        atlas: { model: selections.agentModels['atlas'] || selections.fastAgentModel }
-      },
-      categories: {
-        'visual-engineering': { model: selections.agentModels['visual-engineering'] || selections.powerfulAgentModel, variant: 'high' },
-        ultrabrain: { model: selections.agentModels['ultrabrain'] || selections.powerfulAgentModel, variant: 'high' },
-        deep: { model: selections.agentModels['deep'] || selections.powerfulAgentModel, variant: 'high' },
-        artistry: { model: selections.agentModels['artistry'] || selections.powerfulAgentModel, variant: 'high' },
-        quick: { model: selections.agentModels['quick'] || selections.fastAgentModel },
-        'unspecified-low': { model: selections.agentModels['unspecified-low'] || selections.fastAgentModel },
-        'unspecified-high': { model: selections.agentModels['unspecified-high'] || selections.powerfulAgentModel },
-        writing: { model: selections.agentModels['writing'] || selections.powerfulAgentModel }
+      agents,
+      categories,
+      '[opencode]': {
+        agents,
+        categories,
+        ...(selections.enableTeams ? {
+          team_mode: {
+            enabled: true,
+            max_parallel_members: 4,
+            max_members: 8,
+            tmux_visualization: false
+          }
+        } : {})
       }
     };
     
@@ -70,29 +91,47 @@ export function generateOhMyOpenagentConfig(selections: UserSelections, existing
   }
   
   // Fall back to two-role model structure (fastAgentModel and powerfulAgentModel)
+  const agents = {
+    sisyphus: { model: selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+    hephaestus: { model: selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+    oracle: { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    librarian: { model: selections.fastAgentModel },
+    explore: { model: selections.fastAgentModel },
+    'multimodal-looker': { model: selections.powerfulAgentModel },
+    prometheus: { model: selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+    'plan-consultant': { model: selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+    metis: { model: selections.fastAgentModel, reasoning: 'max', variant: 'max' },
+    'plan-reviewer': { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    momus: { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    atlas: { model: selections.fastAgentModel }
+  };
+
+  const categories = {
+    'visual-engineering': { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    ultrabrain: { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    deep: { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    artistry: { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    quick: { model: selections.fastAgentModel, reasoning: 'low', variant: 'low' },
+    'unspecified-low': { model: selections.fastAgentModel, reasoning: 'low', variant: 'low' },
+    'unspecified-high': { model: selections.powerfulAgentModel, reasoning: 'high', variant: 'high' },
+    writing: { model: selections.powerfulAgentModel }
+  };
+
   const updates = {
     ...baseUpdates,
-    agents: {
-      sisyphus: { model: selections.fastAgentModel, variant: 'max' },
-      hephaestus: { model: selections.fastAgentModel, variant: 'max' },
-      oracle: { model: selections.powerfulAgentModel, variant: 'high' },
-      librarian: { model: selections.fastAgentModel },
-      explore: { model: selections.fastAgentModel },
-      'multimodal-looker': { model: selections.powerfulAgentModel },
-      prometheus: { model: selections.fastAgentModel, variant: 'max' },
-      metis: { model: selections.fastAgentModel, variant: 'max' },
-      momus: { model: selections.powerfulAgentModel, variant: 'medium' },
-      atlas: { model: selections.fastAgentModel }
-    },
-    categories: {
-      'visual-engineering': { model: selections.powerfulAgentModel, variant: 'high' },
-      ultrabrain: { model: selections.powerfulAgentModel, variant: 'high' },
-      deep: { model: selections.powerfulAgentModel, variant: 'high' },
-      artistry: { model: selections.powerfulAgentModel, variant: 'high' },
-      quick: { model: selections.fastAgentModel },
-      'unspecified-low': { model: selections.fastAgentModel },
-      'unspecified-high': { model: selections.powerfulAgentModel },
-      writing: { model: selections.powerfulAgentModel }
+    agents,
+    categories,
+    '[opencode]': {
+      agents,
+      categories,
+      ...(selections.enableTeams ? {
+        team_mode: {
+          enabled: true,
+          max_parallel_members: 4,
+          max_members: 8,
+          tmux_visualization: false
+        }
+      } : {})
     }
   };
   

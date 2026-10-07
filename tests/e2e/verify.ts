@@ -5,11 +5,16 @@ import * as path from 'path';
 
 // Validate config file exists and is valid JSON
 export async function validateConfig(filename: string): Promise<boolean> {
-  const configPath = path.join(process.env.HOME || '', '.config', 'opencode', filename);
+  const configPath = filename === 'omo.jsonc'
+    ? path.join(process.env.HOME || '', '.omo', filename)
+    : path.join(process.env.HOME || '', '.config', 'opencode', filename);
   
   try {
     const content = await fs.readFile(configPath, 'utf-8');
-    JSON.parse(content);
+    const clean = content
+      .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1')
+      .replace(/,(\s*[}\]])/g, '$1');
+    JSON.parse(clean);
     return true;
   } catch {
     return false;
@@ -35,7 +40,10 @@ export async function validateModelsInConfig(
 ): Promise<boolean> {
   try {
     const content = await fs.readFile(configPath, 'utf-8');
-    const config = JSON.parse(content);
+    const clean = content
+      .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1')
+      .replace(/,(\s*[}\]])/g, '$1');
+    const config = JSON.parse(clean);
     
     for (const model of expectedModels) {
       if (!config.model?.includes(model) && 
@@ -53,14 +61,17 @@ export async function validateModelsInConfig(
 // Run all validations
 export async function runValidationSuite(): Promise<{
   configValid: boolean;
+  omoConfigValid: boolean;
   backupValid: boolean;
   modelsValid: boolean;
 }> {
   const configValid = await validateConfig('opencode.json');
+  const omoConfigValid = await validateConfig('omo.jsonc');
   const backupValid = await validateBackupExists();
   
   return {
     configValid,
+    omoConfigValid,
     backupValid,
     modelsValid: true, // Already validated during config write
   };

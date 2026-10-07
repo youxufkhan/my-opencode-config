@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-10-07
+
+### Added
+- **OmO v5 unified configuration (`omo.jsonc`)**: Migrated configuration generation from legacy `oh-my-openagent.json` to the unified `~/.omo/omo.jsonc` path and schema.
+- **Canonical agent roles**: Added direct support for `plan-consultant` (formerly `metis`) and `plan-reviewer` (formerly `momus`) with automatic backwards-compatibility alias mappings.
+- **Reasoning level support**: Configured canonical `reasoning` levels (`max`, `high`, `low`) alongside legacy `variant` properties across all agent roles and categories.
+- **Multi-harness `[opencode]` block mirroring**: Mirrored agents, categories, and `team_mode` into the `[opencode]` block for full OmO v5 harness resolution compatibility.
+- **Enhanced model validation**: Added validation support for fallback `models` arrays and nested harness blocks.
+- **JSONC comment-safe parsing**: Resilient JSONC parsing in `readConfig` and `verify.ts` to prevent syntax errors when reading user-commented configuration files.
+
+### Changed
+- **Pnpm migration**: Updated scripts, tests, and documentation to strictly use `pnpm` and `pnpm dlx`.
+
 ## [0.3.2] - 2026-06-27
 
 ### Fixed

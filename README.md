@@ -18,20 +18,20 @@ Its sole purpose is to make OpenCode great for free by leveraging OpenCode Zen m
 Run the setup wizard directly without installation. This is the fastest way to get started.
 
 ```bash
-npx my-opencode-config
+pnpm dlx my-opencode-config
 ```
 
 ## Key Features
 
 - 🔮 **Intelligent Model Discovery**: Finds and recommends the best-performing free models from OpenCode Zen.
-- 🔌 **Essential Plugins**: Installs and configures the popular `oh-my-openagent` agent harness to put your agent on steroids.
+- 🔌 **Essential Plugins**: Installs and configures the popular `oh-my-openagent` (`oh-my-opencode`) multi-agent harness with modern `omo.jsonc` unified configuration.
 - 🚀 **Superpowers Included**: Integrates the `superpowers` skill set for advanced agent capabilities.
-- 🔐 **Seamless Authentication**: Handles OAuth for OpenCode Zen and Google Gemini.
-- ⚙️ **Smart Configuration**: Configures agents to use free models by default.
+- 🔐 **Seamless Authentication**: Handles OAuth for OpenCode.
+- ⚙️ **Smart Configuration**: Configures agents to use free models by default across `~/.config/opencode/opencode.json` and `~/.omo/omo.jsonc`.
 
 ## Free vs. Paid Options
 
-This package is designed to help you utilize **free models at their best** without spending on API keys or subscriptions. By leveraging OpenCode Zen free tier and Google Gemini free tier limits, it provides a generous allowance for daily, medium-complexity tasks, at no cost.
+This package is designed to help you utilize **free models at their best** without spending on API keys or subscriptions. By leveraging OpenCode Zen free tier limits, it provides a generous allowance for daily, medium-complexity tasks, at no cost.
 
 However, if you need access to a wider variety of models and higher usage limits, OpenCode offers subscription plans that are budget-friendly and provide excellent value:
 
@@ -50,7 +50,7 @@ These subscriptions are reasonably priced and designed to give you the best expe
 Alternatively, you can install the CLI globally for easier access.
 
 ```bash
-npm install -g my-opencode-config
+pnpm add -g my-opencode-config
 ```
 Then, run the wizard:
 ```bash

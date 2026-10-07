@@ -54,3 +54,6 @@ graphify-out/manifest.json
 
 # local token tracking, not useful to share
 graphify-out/cost.json
+
+# OmO local workspace
+.omo/

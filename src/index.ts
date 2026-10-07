@@ -20,7 +20,7 @@ import * as path from 'path';
 import * as os from 'os';
 import { UserSelections } from './types';
 
-// Agent and category names from oh-my-openagent.json
+// Agent and category names from omo.jsonc
 const AGENT_NAMES = [
   'sisyphus',
   'hephaestus',
@@ -29,8 +29,8 @@ const AGENT_NAMES = [
   'explore',
   'multimodal-looker',
   'prometheus',
-  'metis',
-  'momus',
+  'plan-consultant',
+  'plan-reviewer',
   'atlas',
 ];
 
@@ -359,16 +359,16 @@ Options:
           await backupConfig('opencode.json');
           info('Backed up existing opencode.json');
         }
-        if (await configExists('oh-my-openagent.json')) {
-          await backupConfig('oh-my-openagent.json');
-          info('Backed up existing oh-my-openagent.json');
+        if (await configExists('omo.jsonc')) {
+          await backupConfig('omo.jsonc');
+          info('Backed up existing omo.jsonc');
         }
         
         await writeConfig('opencode.json', newOpencodeConfig);
         success('Written opencode.json');
         
-        await writeConfig('oh-my-openagent.json', ohMyOpenagentConfig);
-        success('Written oh-my-openagent.json');
+        await writeConfig('omo.jsonc', ohMyOpenagentConfig);
+        success('Written omo.jsonc');
       });
       
       const opencodeErrors = await validateModels(newOpencodeConfig, 'opencode');
@@ -380,7 +380,7 @@ Options:
       }
       
       if (omoErrors.length > 0) {
-        error('Validation errors in oh-my-openagent.json:');
+        error('Validation errors in omo.jsonc:');
         omoErrors.forEach(e => error(`  - ${e}`));
       }
       
@@ -412,7 +412,7 @@ Options:
     console.log('  2. Run "opencode /connect" if not authenticated');
     console.log('\n💾 Config files:');
     console.log('  ~/.config/opencode/opencode.json');
-    console.log('  ~/.config/opencode/oh-my-openagent.json');
+    console.log('  ~/.omo/omo.jsonc');
     console.log('\n🔄 To restore previous config:');
     console.log('  Check ~/.config/opencode/backups/');
     
