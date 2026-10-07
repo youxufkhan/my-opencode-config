@@ -57,3 +57,7 @@ graphify-out/cost.json
 
 # OmO local workspace
 .omo/
+
+# Local graphify & vaults
+.graphifyignore
+docs/vaults/
